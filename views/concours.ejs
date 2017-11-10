@@ -8,7 +8,18 @@
         </br>
     </div>
     <script>
-        var str = <%- JSON.stringify(str) %>;
+        var maintenant = new Date();
+        var jour = maintenant.getDate();
+
+        var full = "/tirage/" + jour;
+        $.ajax({
+            url: full,
+            type: 'GET',
+            success: function(result) {
+                console.log(result);
+            }
+        });
+
         if (str != undefined) {
             var firstname = "\<li\>Prenom : ";
             firstname = firstname + str.prenom;

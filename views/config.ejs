@@ -3,10 +3,27 @@
         <h1>Entrez votre mot de passe afin de procéder au tirage au sort :</h1>
         </br>
         </br>
-        <form action="/password" name="password" method="post">
-            <input type="password" name="password" value="">
-            <button type="submit" class="">Valider</button>
+        <form>
+            <input type="password" name="password" value="" placeholder="mot de passe" id="input">
+            <input type="submit" onClick="checkPassword();" />
         </form>
         </br>
+        <script>
+            function checkPassword() {            
+                var input = document.getElementById("input").value;            
+                var full = "/password/" + input;
+                $.ajax({
+                    url: full,
+                    type: 'GET',
+                    success: function(result) {
+                        console.log("Bravo le veau !");
+                        if (result == 200)
+                            document.location.href = "http://localhost:8000/concours";
+                        else
+                            document.location.href = "http://localhost:8000/config";
+                    }
+                });
+            }
+        </script>
     </div>
     <% include common/footer %>
