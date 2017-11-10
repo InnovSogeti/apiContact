@@ -16,6 +16,20 @@ module.exports = function(app, db) {
     });
 
     /**
+     * affiche la liste des salons
+     */
+    app.get('/salon/:id', (req, res) => {
+        console.log("===>VDFVDFVDF")
+        db.collection('salon').find({}).toArray(function(err, results) {
+            if (err) {
+                res.send({ 'error': 'An error has occurred' });
+            } else {
+                res.send(results);
+            }
+        });
+    });
+
+    /**
      * ajout d'un salon
      */
     app.post('/notes', (req, res) => {
@@ -29,7 +43,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.post('/api/adduser', (req, res) => {
+    app.post('/adduser', (req, res) => {
         res.send("BRAVO");
         console.log(req.body.prenom)
             /*const note = { text: req.body.body, title: req.body.title };
@@ -53,6 +67,30 @@ module.exports = function(app, db) {
                 res.send({ 'error': 'An error has occurred' });
             } else {
                 res.render('login', { str: "deleted" });
+            }
+        });
+    });
+
+    /**
+     * verif du mdp
+     */
+    app.get('/password/:mdp', (req, res) => {
+        if (req.params.mdp == 'a') {
+            res.send('200');
+        } else {
+            res.send('404');
+        }
+    });
+
+    /**
+     * tirage au sort
+     */
+    app.get('/tirage/:jour', (req, res) => {
+        db.collection('visiteurs').find({ jour: req.params.jour }).toArray(function(err, results) {
+            if (err) {
+                res.send({ 'error': 'An error has occurred' });
+            } else {
+                res.send(results);
             }
         });
     });

@@ -27,7 +27,7 @@ app.get('/login_password', function(req, res, next) {
 });
 
 app.get('/salon', function(req, res, next) {
-    res.render('salon', { str: cam });
+    res.render('salon', { str: "NON" });
 });
 
 app.get('/add_salon', function(req, res, next) {
@@ -40,6 +40,10 @@ app.get('/password', function(req, res, next) {
 
 app.get('/config', function(req, res, next) {
     res.render('config', { str: "NON" });
+});
+
+app.get('/concours', function(req, res, next) {
+    res.render('concours', {});
 });
 
 MongoClient.connect(db.url, (err, database) => {
