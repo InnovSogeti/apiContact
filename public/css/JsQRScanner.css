@@ -1,0 +1,9 @@
+.qrscanner video {
+  max-width: 50%;
+  max-height: 5%;
+}
+
+.row-element-set {
+  display: flex;
+  flex-direction: column;
+}

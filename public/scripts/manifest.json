@@ -1,0 +1,36 @@
+{
+  "short_name": "Sogeti",
+  "name": "Sogeti",
+  "theme_color": "#2196F3",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "../images/icon_48.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "../images/icon_96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "../images/icon_192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "../images/icon_144.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "../images/icon_512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "background_color": "#FAFAFA",  
+  "start_url": "http://149.202.223.218/",
+  "orientation": "portrait"
+}

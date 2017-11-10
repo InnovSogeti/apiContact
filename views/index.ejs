@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<% include common/header %>
+
+    <!--<form action="/adduser" name="adduser" method="post">-->
+    <script type="text/javascript" src="/javascripts/scannedText.js"></script>
+    <div class="container">
+        <div class="card">
+            <form name="toto">
+                <% include common/infos_perso%>
+                    <div class="form-group" id="form">
+                        <% include common/infos_competences%>
+                    </div>
+                    </br>
+                    <button onclick="useradd()">Supprimer</button>
+                    <!--<button type="submit" class="btn btn-success btn-lg btn-block">Valider</button>-->
+                    </br>
+                    <script>
+                        var id_salon = <%- JSON.stringify(my_id) %>;
+
+                        function useradd() {
+                            var full = "/api/adduser";
+                            $.ajax({
+                                url: full,
+                                type: 'POST',
+                                success: function(result) {
+                                    console.log("WIN");
+                                    document.location.href = "http://localhost:8000/login";
+                                }
+                            });
+                        }
+                    </script>
+                    <script>
+                        var my_id = <%- JSON.stringify(my_id) %>;
+
+                        if (my_id != '') {
+                            var id_form = "<div class=\"form-group\"><input type=\"text\" class=\"form-control\" name=\"my_id\" value=\"";
+
+                            id_form = id_form + my_id;
+                            id_form = id_form + "\" style='visibility:hidden;display:none'></div>"
+                            document.getElementById("form").innerHTML += id_form;
+                        } else {
+                            document.location.href = "http://localhost:8000/login";
+                        }
+                    </script>
+                    <label>* : Champs obligatoire</label>
+                    </br>
+                    </br>
+            </form>
+        </div>
+    </div>
+    </body>
+    <% include common/footer %>
+
+</html>

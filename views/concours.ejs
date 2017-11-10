@@ -1,0 +1,28 @@
+<% include common/header %>
+    <div class="container">
+        </br>
+        <div id="random">
+            <ul class="name">
+            </ul>
+        </div>
+        </br>
+    </div>
+    <script>
+        var str = <%- JSON.stringify(str) %>;
+        if (str != undefined) {
+            var firstname = "\<li\>Prenom : ";
+            firstname = firstname + str.prenom;
+            firstname = firstname + "\</li\>";
+            $("ul").append(firstname);
+            var name = "\<li\>Nom : ";
+            name = name + str.nom;
+            name = name + "\</li\>";
+            $("ul").append(name);
+            var email = "\<li\>Email : ";
+            email = email + str.email;
+            email = email + "\</li\>";
+            $("ul").append(email);
+        }
+    </script>
+
+    <% include common/footer %>
