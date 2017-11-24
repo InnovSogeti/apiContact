@@ -12,8 +12,8 @@ module.exports = class SalonPersistence {
         var collection = this.db.get(collect);
         // envoie à la bdd
         collection.insert({
-                "nom_salon": salon.nom,
-                "ville_salon": salon.ville,
+                "nom": salon.nom,
+                "ville": salon.ville,
                 "date_debut": salon.date_debut,
                 "date_fin": salon.date_fin,
                 "description": salon.description,
@@ -22,6 +22,7 @@ module.exports = class SalonPersistence {
             function(err, doc) {
                 if (err) {
                     throw error;
+                    res.send('500');
                 } else {
                     console.log('=> Ajout du salon : ' + salon.nom + ' à ' + salon.ville);
                 }

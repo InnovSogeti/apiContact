@@ -32,7 +32,7 @@ module.exports = function(app, salonPersistence) {
     /**
      * renvoie l'id et le choix de la cam
      * de la page salon pour la page index
-     */
+     
     app.post('/addid', function(req, res) {
         var fs = require('fs');
         var cam = JSON.parse(fs.readFileSync('./public/site_map.json', 'utf8'));
@@ -41,14 +41,14 @@ module.exports = function(app, salonPersistence) {
 
         res.render('index', { my_id: req.body.my_id, cam: cam[site_map[1]] });
     });
-
+*/
 
     /**
      * Ajoute un salon
      * de la page  salon pour la page login
      */
-    app.post('/addsalon', function(req, res) {
-        var id = req.body.nom_salon + req.body.debut_salon + req.body.fin_salon;
+    app.post('/addSalons/', function(req, res) {
+        var id = req.body.nom_salon + '_' + req.body.debut_salon + '_' + req.body.fin_salon;
         var salon = {
             nom: req.body.nom_salon,
             ville: req.body.ville_salon,
@@ -58,6 +58,6 @@ module.exports = function(app, salonPersistence) {
             id_salon: id
         };
         salonPersistence.save(salon, callback);
-        res.render('login', { str: 'OK' });
+        res.send('200');
     });
 };

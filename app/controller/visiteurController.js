@@ -11,7 +11,8 @@ module.exports = function(app, visiteurPersistence) {
      * renvoie un tableau qui contient les metiers
      */
 
-    function fill_res(metier, z, my_profil, j, res, k) {
+    function fill_res(metier, my_profil, j, res, k) {
+        var z = 0;
         while (metier[z]) {
             if (metier[z] == my_profil[j]) {
                 res[k] = my_profil[j];
@@ -22,6 +23,22 @@ module.exports = function(app, visiteurPersistence) {
         return (res);
     }
 
+    function count_k(metier, my_profil, j, res, k) {
+        var z = 0;
+        while (metier[z]) {
+            if (metier[z] == my_profil[j]) {
+                k++;
+            }
+            z++;
+        }
+        return (k);
+    }
+
+    /**
+     * 
+     * @param {*} metier => tab qui contient TOUS les métier sélectionnés
+     * @param {*} profil => profil choisi
+     */
     function check_profil(metier, profil) {
         var fs = require('fs');
         var json = JSON.parse(fs.readFileSync('./public/config.json', 'utf8'));
@@ -41,11 +58,10 @@ module.exports = function(app, visiteurPersistence) {
         if (i > 0)
             i--;
         while (my_profil[j]) {
-            var z;
             my_profil[j] = my_profil[j].replace(/ /g, "_");
-            z = 0;
             if ((metier !== undefined) && (metier[0].length > 1)) {
-                res = fill_res(metier, z, my_profil, j, res, k);
+                res = fill_res(metier, my_profil, j, res, k);
+                k = count_k(metier, my_profil, j, res, k);
             } else {
                 if (metier == my_profil[j]) {
                     res[0] = my_profil[j];
@@ -90,7 +106,7 @@ module.exports = function(app, visiteurPersistence) {
      * si le visiteur veut etre recontacté mais ne met pas de profil, redirection vers la fonction get puis vers la page index
      * si le visiteur ne veut pas etre recontacté redirection vers get puis vers la page index
      */
-    app.post('/adduser', function(req, res) {
+    app.post('/saveUsers', function(req, res) {
         var maintenant = new Date();
         var jour = maintenant.getDate();
         var visiteur = {
@@ -117,14 +133,15 @@ module.exports = function(app, visiteurPersistence) {
         if (req.body.ok == "ok") {
             if (visiteur.profil !== undefined) {
                 visiteur.metier = check_profil(req.body.metier, visiteur.profil);
+                console.log(visiteur);
             }
             visiteur.contact = "oui";
             get(visiteur, callback);
-            res.render('index', { my_id: req.body.my_id });
+            res.send('200');
         } else {
             visiteur.contact = "non";
             get(visiteur, callback);
-            res.render('index', { my_id: req.body.my_id });
+            res.send('200');
         }
     });
 };
