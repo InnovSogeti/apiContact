@@ -44,7 +44,7 @@ module.exports = class SalonPersistence {
                     return null;
                 } else {
                     var i = 0;
-                    var cpt;
+                    var cpt = 0;
                     while (results[i]) {
                         if ((date.yyyymmdd() >= results[i].date_debut) && (date.yyyymmdd() <= results[i].date_fin)) {
                             cpt++;
