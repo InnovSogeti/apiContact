@@ -22,37 +22,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extened: true }));
 
-
-app.get('/', function(req, res, next) {
-    res.render('index', { my_id: "", cam: "NON" });
-});
-
-app.get('/login', function(req, res, next) {
-    res.render('login', { title: 'Express' });
-});
-
-app.get('/login_password', function(req, res, next) {
-    res.render('login_password', { title: 'Express' });
-});
-
-app.get('/salon', function(req, res, next) {
-    res.render('salon', { str: "NON" });
-});
-
 app.get('/add_salon', function(req, res, next) {
     res.render('add_salon', { title: 'Express' });
-});
-
-app.get('/password', function(req, res, next) {
-    res.render('password', { title: 'Express' });
-});
-
-app.get('/config', function(req, res, next) {
-    res.render('config', { str: "NON" });
-});
-
-app.get('/concours', function(req, res, next) {
-    res.render('concours', {});
 });
 
 MongoClient.connect(db.url, (err, database) => {
@@ -76,5 +47,3 @@ const salonPersistence = new SalonPersistence(bdd);
 
 require('./app/controller/visiteurController')(app, visiteurPersistence);
 require('./app/controller/salonController')(app, salonPersistence);
-require('./app/controller/password')(app);
-require('./app/controller/login_password')(app);

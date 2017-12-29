@@ -3,45 +3,43 @@ module.exports = function(app, salonPersistence) {
         return (data);
     }
 
+
     /**
-     *Permet de lister tous les visiteurs 
-     *pour la page list_visiteur de la page salon
+     * affiche la liste des salons
      */
-    app.post('/list', function(req, res) {
-        var MongoClient = require('mongodb').MongoClient;
-        var fs = require('fs');
-        var json = JSON.parse(fs.readFileSync('./public/site_map.json', 'utf8'));
-        var obj = json; //tous le fichier JSON dans un obj
-        var site_map = Object.keys(obj);
-        var bdd = json[site_map[2]];
-        var collection = json[site_map[3]];
-        var url = "mongodb://localhost:27017/";
-
-        url = url + bdd;
-        MongoClient.connect(url, function(err, db) {
-            if (err) throw err;
-            db.collection(collection).find({}).toArray(function(err, result) {
-                if (err) throw err;
-                res.render('list_visiteur', { list: result, my_id: req.body.my_id });
-                db.close();
-            });
+    app.get('/salon/list/:id', (req, res) => {
+        salonPersistence.get(function(listeSalons) {
+            res.send(listeSalons)
         });
-
     });
 
     /**
-     * renvoie l'id et le choix de la cam
-     * de la page salon pour la page index
-     
-    app.post('/addid', function(req, res) {
-        var fs = require('fs');
-        var cam = JSON.parse(fs.readFileSync('./public/site_map.json', 'utf8'));
-        var obj = cam; //tous le fichier JSON dans un obj
-        var site_map = Object.keys(obj);
-
-        res.render('index', { my_id: req.body.my_id, cam: cam[site_map[1]] });
+     * return le salon qui se passe ajd
+     */
+    app.get('/salon/affSalon/', (req, res) => {
+        salonPersistence.get_today(function(today) {
+            res.send(today)
+        });
     });
-*/
+
+    /**
+     * return le nb de salon au jour donnée
+     * Ne fait pas la même chose que la fonction du dessus
+     */
+    app.get('/salon/get/', (req, res) => {
+        salonPersistence.get_a_day(function(day) {
+            res.send(day)
+        });
+    });
+
+    /**
+     * delete un salon
+     */
+    app.delete('/salon/dell/:id_salon', (req, res) => {
+        salonPersistence.delete(req, function(listeSalons) {
+            res.send(listeSalons)
+        });
+    });
 
     /**
      * Ajoute un salon

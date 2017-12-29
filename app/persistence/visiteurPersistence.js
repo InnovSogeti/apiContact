@@ -1,12 +1,29 @@
 module.exports = class VisteurPersistence {
 
     constructor(db) {
-            this.db = db;
-        }
-        /**
-         * Enregistrer le visiteur
-         */
+        this.db = db;
+    }
 
+    get(req, callback) {
+        var MongoClient = require('mongodb').MongoClient;
+        var url = "mongodb://localhost:27017/appliContact";
+
+        const id = req.params.id_salon;
+        MongoClient.connect(url, function(err, db) {
+            if (err) throw err;
+            db.collection('visiteurs').find({ id_salon: req.params.id_salon }).toArray(function(err, results) {
+                if (err) {
+                    callback("FAIL");
+                } else {
+                    callback(results);
+                }
+            });
+        });
+    }
+
+    /**
+     * Enregistrer le visiteur
+     */
     save(visiteur, callback) {
         var fs = require('fs');
         var json = JSON.parse(fs.readFileSync('./public/site_map.json', 'utf8'));

@@ -99,6 +99,15 @@ module.exports = function(app, visiteurPersistence) {
         });
     }
 
+    /**
+     *Permet de lister tous les visiteurs 
+     *pour la page list_visiteur de la page salon
+     */
+    app.get('/visiteur/aff/:id_salon', function(req, res) {
+        visiteurPersistence.get(req, function(result) {
+            res.send(result);
+        });
+    });
 
     /**
      * met les informations du visiteur dans un objet "visiteur"
@@ -133,7 +142,6 @@ module.exports = function(app, visiteurPersistence) {
         if (req.body.ok == "ok") {
             if (visiteur.profil !== undefined) {
                 visiteur.metier = check_profil(req.body.metier, visiteur.profil);
-                console.log(visiteur);
             }
             visiteur.contact = "oui";
             get(visiteur, callback);
