@@ -3,12 +3,13 @@ module.exports = function(app, salonPersistence) {
         return (data);
     }
 
-
     /**
      * affiche la liste des salons
      */
-    app.get('/salon/list/:id', (req, res) => {
-        salonPersistence.get(function(listeSalons) {
+    app.get('/salon/list/', (req, res) => {
+        //console.log(req)
+        salonPersistence.get(function(err, listeSalons) {
+            //console.log(listeSalons)
             res.send(listeSalons)
         });
     });
@@ -19,6 +20,7 @@ module.exports = function(app, salonPersistence) {
     app.get('/salon/affSalon/', (req, res) => {
         salonPersistence.get_today(function(today) {
             res.send(today)
+            console.log(today)
         });
     });
 
@@ -29,6 +31,7 @@ module.exports = function(app, salonPersistence) {
     app.get('/salon/get/', (req, res) => {
         salonPersistence.get_a_day(function(day) {
             res.send(day)
+            console.log(day)
         });
     });
 

@@ -1,59 +1,45 @@
-module.exports = class VisteurPersistence {
+var DB = require('../../db')
+var COLLECTION = 'visiteurs'
+/**
+ * Retourne un liste de visiteurs en fonction de l'id d'un salon
+ * @param {*} id 
+ * @param {*} callback 
+ */
+exports.get = function (id, callback) {
+    var db = DB.getDB()
+    db.collection('visiteurs').find({ id_salon: id }).toArray(function (err, results) {
+        if (err) {
+            callback("FAIL");
+        } else {
+            callback(null, results);
+        }
+    });
 
-    constructor(db) {
-        this.db = db;
-    }
+}
 
-    get(req, callback) {
-        var MongoClient = require('mongodb').MongoClient;
-        var url = "mongodb://localhost:27017/appliContact";
-
-        const id = req.params.id_salon;
-        MongoClient.connect(url, function(err, db) {
-            if (err) throw err;
-            db.collection('visiteurs').find({ id_salon: req.params.id_salon }).toArray(function(err, results) {
-                if (err) {
-                    callback("FAIL");
-                } else {
-                    callback(results);
-                }
-            });
-        });
-    }
-
-    /**
-     * Enregistrer le visiteur
-     */
-    save(visiteur, callback) {
-        var fs = require('fs');
-        var json = JSON.parse(fs.readFileSync('./public/site_map.json', 'utf8'));
-        var obj = json; //tous le fichier JSON dans un obj
-        var site_map = Object.keys(obj);
-        var collect = json[site_map[3]];
-        var collection = this.db.get("visiteurs");
-
-        // envoie à la bdd
-        collection.insert({
-                "prenom": visiteur.prenom,
-                "nom": visiteur.nom,
-                "email": visiteur.email,
-                "telephone": visiteur.telephone,
-                "linkedin": visiteur.linkedin,
-                "viadeo": visiteur.viadeo,
-                "jeuMario": visiteur.jeuMario,
-                "jeuPepper": visiteur.jeuPepper,
-                "profil": visiteur.profil,
-                "metier": visiteur.metier,
-                "contact": visiteur.contact,
-                "jour": visiteur.date,
-                "id_salon": visiteur.id_salon
-            },
-            function(err, doc) {
-                if (err) {
-                    throw error
-                }
-                console.log('=> Inscription de ' + visiteur.prenom + ' ' + visiteur.nom);
-            });
-        callback("ok");
-    }
-};
+/**
+ * Enregistre un visiteur
+ * @param {*} visiteur 
+ * @param {*} callback 
+ */
+exports.save = function (visiteur, callback) {
+    db = DB.getDB()
+    db.collection(COLLECTION).insert({
+        "prenom": visiteur.prenom,
+        "nom": visiteur.nom,
+        "email": visiteur.email,
+        "telephone": visiteur.telephone,
+        "linkedin": visiteur.linkedin,
+        "viadeo": visiteur.viadeo,
+        "jeuMario": visiteur.jeuMario,
+        "jeuPepper": visiteur.jeuPepper,
+        "profil": visiteur.profil,
+        "metier": visiteur.metier,
+        "contact": visiteur.contact,
+        "jour": visiteur.date,
+        "id_salon": visiteur.id_salon
+    }, function (err, docs) {
+        if (err) return cb(err)
+        callback(null, docs.ops[0]._id)
+    })
+}

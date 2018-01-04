@@ -104,7 +104,7 @@ module.exports = function(app, visiteurPersistence) {
      *pour la page list_visiteur de la page salon
      */
     app.get('/visiteur/aff/:id_salon', function(req, res) {
-        visiteurPersistence.get(req, function(result) {
+        visiteurPersistence.get(req.params.id_salon, function(result) {
             res.send(result);
         });
     });

@@ -1,4 +1,6 @@
 module.exports = function(app, db) {
+
+var DB = require('../../db')
     /**
      * verif du mdp
      */
@@ -16,7 +18,8 @@ module.exports = function(app, db) {
     app.get('/tirage/', (req, res) => {
         var date = new Date();
         var jour = date.getDate();
-        db.collection('visiteurs').find({ jour: jour }).toArray(function(err, results) {
+        var db = DB.getDB()
+        DB.collection('visiteurs').find({ jour: jour }).toArray(function(err, results) {
             if (err) {
                 res.send({ 'error': 'An error has occurred' });
             } else {
