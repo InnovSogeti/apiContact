@@ -1,8 +1,8 @@
 const should = require('should')
     , DB = require('../../db')
     , fixtures = require('../fixtures/model-salons')
-    , Salon = require('../../app/persistence/salonPersistence')
-
+    , salons = require('../../app/persistence/salonPersistence')
+var Salon = new salons();
 const salon = {
     nom: 'OuestAvenir',
     ville: 'Rennes',

@@ -1,11 +1,6 @@
-//import { MODE_PRODUCTION } from './db';
-
 const express = require('express');
-const MongoClient = require('mongodb').MongoClient;
 const bodyParser = require('body-parser');
-const db = require('./config/db');
 const app = express();
-//const monk = require('monk');
 const path = require('path');
 const port = 8000;
 
@@ -27,31 +22,15 @@ app.get('/add_salon', function (req, res, next) {
     res.render('add_salon', { title: 'Express' });
 });
 
-/*MongoClient.connect(db.url, (err, database) => {
-
-    if (err) return console.log(err)
-    //require('./app/routes')(app, database);
-    app.listen(port, () => {
-        console.log("App listening on port " + port);
-    });
-
-})*/
+app.use(require('./app/router'));
 
 const DB = require('./db');
-/*DB.connect(DB.MODE_PRODUCTION, done => {
-    if (err) return console.log(err)
-    require('./app/routes')(app, database);
-    app.listen(port, () => {
-        console.log("App listening on port " + port);
-    })
-})*/
-
 DB.connect(DB.MODE_PRODUCTION, function(err, db) {
   if (err) {
     console.log('Unable to connect to Mongo.')
     process.exit(1)
   } else {
-    require('./app/routes')(app, db);
+    //require('./app/routes')(app, db);
     app.listen(port, () => {
         console.log("App listening on port " + port);
     })
@@ -59,14 +38,8 @@ DB.connect(DB.MODE_PRODUCTION, function(err, db) {
 })
 
 
-//var mymonk = "localhost:27017/appliContact";
-//const bdd = monk(mymonk);
-
 const VisiteurPersistence = require('./app/persistence/visiteurPersistence');
-//const visiteurPersistence = new VisiteurPersistence(bdd);
-
 const SalonPersistence = require('./app/persistence/salonPersistence');
-//const salonPersistence = new SalonPersistence(bdd);
 
-require('./app/controller/visiteurController')(app, VisiteurPersistence);
-require('./app/controller/salonController')(app, SalonPersistence);
+// require('./app/controller/visiteurController')(app, VisiteurPersistence);
+// require('./app/controller/salonController')(app, SalonPersistence);

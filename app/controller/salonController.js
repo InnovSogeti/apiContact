@@ -1,54 +1,75 @@
-module.exports = function(app, salonPersistence) {
-    function callback(data) {
-        return (data);
+// import { read } from 'fs';
+// import { error } from 'util';
+
+// Chargement de la couche persistence
+const SalonPersistence = require('../persistence/salonPersistence');
+
+module.exports = class SalonController {
+
+    // constructor() {
+    //     this.salonPersistence = new SalonPersistence();
+    // }
+
+    setPersistence(salonPersistence) {
+        this.salonPersistence = salonPersistence;
+    }
+    /**
+ * Renvoie la liste des salons
+ * @param {*} res 
+ */
+    getSalons(callback) {
+        this.salonPersistence.get(callback)
     }
 
     /**
-     * affiche la liste des salons
+     * Vérifie le mot de pass entré par l'utilisateur
+     * @param {*} req 
+     * @param {*} res 
      */
-    app.get('/salon/list/', (req, res) => {
-        //console.log(req)
-        salonPersistence.get(function(err, listeSalons) {
-            //console.log(listeSalons)
-            res.send(listeSalons)
-        });
-    });
-
+    checkPassword(req, res) {
+        if (req.params.mdp == 'a') {
+            res.send('200');
+        } else {
+            res.send('404');
+        }
+    }
     /**
-     * return le salon qui se passe ajd
+     * Retourne le qui se passe aujourd'hui
+     * @param {*} res 
      */
-    app.get('/salon/affSalon/', (req, res) => {
-        salonPersistence.get_today(function(today) {
-            res.send(today)
-            console.log(today)
-        });
-    });
-
+    getSalonCourant(callback) {
+        this.salonPersistence.get_today(callback);
+    }
     /**
-     * return le nb de salon au jour donnée
-     * Ne fait pas la même chose que la fonction du dessus
+     * Retourne le nombre de salons pour un jour donné
+     * @param {*} res 
      */
-    app.get('/salon/get/', (req, res) => {
-        salonPersistence.get_a_day(function(day) {
-            res.send(day)
-            console.log(day)
+    getNbSalons(res) {
+        this.salonPersistence.get_a_day(function (err, day) {
+            res.send(day);
         });
-    });
+    }
 
-    /**
-     * delete un salon
-     */
-    app.delete('/salon/dell/:id_salon', (req, res) => {
-        salonPersistence.delete(req, function(listeSalons) {
-            res.send(listeSalons)
+    // ne fonctionne pas 
+    deleteSalon(req, res) {
+        console.log(req.body.id_salon)
+        this.salonPersistence.delete(req.body.id_salon, function (err, listeSalons) {
+            console.log(listeSalons);
+            res.send(listeSalons);
         });
-    });
+    }
 
-    /**
-     * Ajoute un salon
-     * de la page  salon pour la page login
-     */
-    app.post('/addSalons/', function(req, res) {
+    // /**
+    //  * delete un salon
+    //  */
+    // app.delete('/salon/dell/:id_salon', (req, res) => {
+    //     salonPersistence.delete(req, function(listeSalons) {
+    //         res.send(listeSalons)
+    //     });
+    // });
+
+    addSalon(req, res) {
+        console.log(req.body)
         var id = req.body.nom_salon + '_' + req.body.debut_salon + '_' + req.body.fin_salon;
         var salon = {
             nom: req.body.nom_salon,
@@ -58,7 +79,12 @@ module.exports = function(app, salonPersistence) {
             date_fin: req.body.fin_salon,
             id_salon: id
         };
-        salonPersistence.save(salon, callback);
-        res.send('200');
-    });
-};
+        this.salonPersistence.save(salon, function (err, id) {
+            res.send('200');
+        });
+    }
+}
+
+
+
+
