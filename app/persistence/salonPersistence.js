@@ -35,7 +35,7 @@ module.exports = class SalonPersistence {
             "id_salon": salon.id_salon
         }, function (err, doc) {
             if (err) return callback(err)
-            callback(null, doc.ops[0]._id)
+            callback("200", doc.ops[0]._id)
         })
     }
 

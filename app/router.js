@@ -38,8 +38,14 @@ router.delete('/salon/dell/:id_salon', function (req, res) {
     salonController.deleteSalon(req, res);
 });
 
-router.post('/addSalons/', function (req, res) {
-    salonController.addSalon(req, res);
+router.post('/salon/add', function (req, res) {
+    salonController.addSalon(req, function(retour,idCree){
+        console.log("LOG BH 01 >")
+        console.log(retour)
+        console.log(idCree)
+        console.log("< LOG BH 01")
+        res.send(retour);
+    });
 });
 
 module.exports = router;

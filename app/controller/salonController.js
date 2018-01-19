@@ -68,7 +68,7 @@ module.exports = class SalonController {
     //     });
     // });
 
-    addSalon(req, res) {
+    addSalon(req, callback) {
         console.log(req.body)
         var id = req.body.nom_salon + '_' + req.body.debut_salon + '_' + req.body.fin_salon;
         var salon = {
@@ -79,9 +79,7 @@ module.exports = class SalonController {
             date_fin: req.body.fin_salon,
             id_salon: id
         };
-        this.salonPersistence.save(salon, function (err, id) {
-            res.send('200');
-        });
+        this.salonPersistence.save(salon, callback);
     }
 }
 
