@@ -13,12 +13,26 @@ module.exports = class SalonController {
     setPersistence(salonPersistence) {
         this.salonPersistence = salonPersistence;
     }
-    /**
- * Renvoie la liste des salons
- * @param {*} res 
- */
+
+    //Retourne le salon correspondant à idSalon
+    getSalon(idSalon,callback){
+        this.salonPersistence.getSalon(idSalon,callback)
+    }
+
+    //Retourne tous les salons enregistrés
     getSalons(callback) {
-        this.salonPersistence.get(callback)
+        this.salonPersistence.getAllSalons(callback)
+    }
+
+    // Suppression d'un salon 
+    deleteSalon(idSalon, callback) {
+        console.log("Ctrl : Suppression du salon : "+idSalon);
+        this.salonPersistence.delete(idSalon,function(err){
+            //Gestion des KO
+            if (err) return callback(err);
+            //Retour OK
+            callback("200");
+        });
     }
 
     /**
@@ -33,6 +47,9 @@ module.exports = class SalonController {
             res.send('404');
         }
     }
+
+    
+
     /**
      * Retourne le qui se passe aujourd'hui
      * @param {*} res 
@@ -50,24 +67,9 @@ module.exports = class SalonController {
         });
     }
 
-    // ne fonctionne pas 
-    deleteSalon(req, res) {
-        console.log(req.body.id_salon)
-        this.salonPersistence.delete(req.body.id_salon, function (err, listeSalons) {
-            console.log(listeSalons);
-            res.send(listeSalons);
-        });
-    }
+    
 
-    // /**
-    //  * delete un salon
-    //  */
-    // app.delete('/salon/dell/:id_salon', (req, res) => {
-    //     salonPersistence.delete(req, function(listeSalons) {
-    //         res.send(listeSalons)
-    //     });
-    // });
-
+    //Ajout d'un salon
     addSalon(req, callback) {
         console.log(req.body)
         var id = req.body.nom_salon + '_' + req.body.debut_salon + '_' + req.body.fin_salon;

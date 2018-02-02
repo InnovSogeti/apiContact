@@ -1,25 +1,51 @@
 const DB = require('../../db')
 const COLLECTION = 'salons'
+var sanitize = require('mongo-sanitize');
+var ObjectID = require('mongodb').ObjectID;
 
 module.exports = class SalonPersistence {
+
+    //Find le salon correspondant à idSalon
+    getSalon(idSalon, callback) {
+        var query={
+            id_salon: sanitize(idSalon)
+        }
+        console.log(query);
+        var db = DB.getDB()
+        db.collection(COLLECTION).findOne(query,function(err,doc){
+            callback(err,doc)
+        })
+    }
+
+
+    // Renvoie la liste des salons 
+    getAllSalons(callback) {
+        var db = DB.getDB()
+        db.collection(COLLECTION).find().toArray(function(err,doc){
+            callback(err,doc)
+        })
+    }
 
     /**
      * Suppression d'un salon
      */
-    delete(id, callback) {
+    delete(idSalon, callback) {
+        console.log("DB : Suppression du salon : "+idSalon);
         var db = DB.getDB()
-        db.collection(COLLECTION).remove({ _id: id }, (err, item) => {
+        var query={
+            _id: new ObjectID(sanitize(idSalon))
+        }
+        //db.collection(COLLECTION).remove(query, (err, item) => {
+        //    callback(err);
+        //})
+        db.collection(COLLECTION).remove(query, function(err,doc){
+            if(err) console.log("DB : log : "+err);
             callback(err)
         })
     }
-    /**
-     * Renvoie la liste des salons 
-     * @param {*} callback 
-     */
-    get(callback) {
-        var db = DB.getDB()
-        db.collection(COLLECTION).find().toArray(callback)
-    }
+    
+
+    
 
     /**
      * Enregistre un salon

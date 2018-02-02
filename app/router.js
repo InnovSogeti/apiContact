@@ -13,9 +13,34 @@ salonController.setPersistence(salonPersistence);
 
 
 // Routage
-router.get('/salon/list/', function (req, res) {
+
+// Retourne le salon correspondant à id_salon
+router.get('/salon/:id_salon', function (req, res) {
+    console.log(req.params.id_salon);
+    salonController.getSalon(req.params.id_salon,function (err, salon) {
+        if(err) {
+            res.send(err);
+        }else{
+            res.send(salon);
+        }
+    });
+});
+
+// Ressource qui remonte tout les salons
+router.get('/salon', function (req, res) {
     salonController.getSalons(function (err, listeSalons) {
-        res.send(listeSalons);
+        if(err) {
+            res.send(err);
+        }else{
+            res.send(listeSalons);
+        }
+    });
+});
+
+// Ressource qui supprime un salon
+router.delete('/salon/:id_salon', function (req, res) {
+    salonController.deleteSalon(req.params.id_salon, function(retour){
+        res.send(retour);
     });
 });
 
@@ -29,15 +54,14 @@ router.get('/salon/affSalon/', function (req, res) {
     });
 });
 
+
 router.get('/salon/get/', function (req, res) {
     salonController.getNbSalons(res);
 });
 
-// ne fonctionne pas
-router.delete('/salon/dell/:id_salon', function (req, res) {
-    salonController.deleteSalon(req, res);
-});
 
+
+//Ressource qui enregistre un nouveau salon
 router.post('/salon/add', function (req, res) {
     salonController.addSalon(req, function(retour,idCree){
         console.log("LOG BH 01 >")
