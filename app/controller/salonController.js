@@ -1,17 +1,27 @@
-// import { read } from 'fs';
-// import { error } from 'util';
-
-// Chargement de la couche persistence
-const SalonPersistence = require('../persistence/salonPersistence');
-
 module.exports = class SalonController {
 
-    // constructor() {
-    //     this.salonPersistence = new SalonPersistence();
-    // }
-
+    //Init couche persistence
     setPersistence(salonPersistence) {
         this.salonPersistence = salonPersistence;
+    }
+
+    //****************************/
+    //****** CRUD SALONS *********/
+    //****************************/
+
+    //Ajout d'un salon
+    addSalon(req, callback) {
+        console.log(req.body)
+        var id = req.body.nom_salon + '_' + req.body.debut_salon + '_' + req.body.fin_salon;
+        var salon = {
+            nom: req.body.nom_salon,
+            ville: req.body.ville_salon,
+            description: req.body.description_salon,
+            date_debut: req.body.debut_salon,
+            date_fin: req.body.fin_salon,
+            id_salon: id
+        };
+        this.salonPersistence.save(salon, callback);
     }
 
     //Retourne le salon correspondant à idSalon
@@ -34,6 +44,12 @@ module.exports = class SalonController {
             callback("200");
         });
     }
+
+
+    //****************************/
+    //********* AUTRES ***********/
+    //****************************/
+
 
     /**
      * Vérifie le mot de pass entré par l'utilisateur
@@ -65,23 +81,6 @@ module.exports = class SalonController {
         this.salonPersistence.get_a_day(function (err, day) {
             res.send(day);
         });
-    }
-
-    
-
-    //Ajout d'un salon
-    addSalon(req, callback) {
-        console.log(req.body)
-        var id = req.body.nom_salon + '_' + req.body.debut_salon + '_' + req.body.fin_salon;
-        var salon = {
-            nom: req.body.nom_salon,
-            ville: req.body.ville_salon,
-            description: req.body.description_salon,
-            date_debut: req.body.debut_salon,
-            date_fin: req.body.fin_salon,
-            id_salon: id
-        };
-        this.salonPersistence.save(salon, callback);
     }
 }
 

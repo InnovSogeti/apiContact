@@ -1,5 +1,5 @@
 const DB = require('../../db')
-const COLLECTION = 'salons'
+const COLLECTION = 'salon'
 var sanitize = require('mongo-sanitize');
 var ObjectID = require('mongodb').ObjectID;
 
@@ -44,25 +44,15 @@ module.exports = class SalonPersistence {
         })
     }
     
-
-    
-
     /**
      * Enregistre un salon
      */
     save(salon, callback) {
         var db = DB.getDB()
-        db.collection(COLLECTION).insert({
-            "nom": salon.nom,
-            "ville": salon.ville,
-            "date_debut": salon.date_debut,
-            "date_fin": salon.date_fin,
-            "description": salon.description,
-            "id_salon": salon.id_salon
-        }, function (err, doc) {
-            if (err) return callback(err)
-            callback("200", doc.ops[0]._id)
-        })
+        db.collection(COLLECTION).insertOne(salon, function (err, docs) {
+            if (err) return cb(err)
+            callback("200", docs.ops[0]._id)
+        });
     }
 
     get_a_day(callback) {

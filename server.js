@@ -38,8 +38,8 @@ DB.connect(DB.MODE_PRODUCTION, function(err, db) {
 })
 
 
-const VisiteurPersistence = require('./app/persistence/visiteurPersistence');
-const SalonPersistence = require('./app/persistence/salonPersistence');
+//const VisiteurPersistence = require('./app/persistence/visiteurPersistence');
+//const SalonPersistence = require('./app/persistence/salonPersistence');
 
 // require('./app/controller/visiteurController')(app, VisiteurPersistence);
 // require('./app/controller/salonController')(app, SalonPersistence);

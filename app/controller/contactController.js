@@ -1,7 +1,49 @@
-module.exports = function(app, visiteurPersistence) {
-    function callback(data) {
-        return (data);
+module.exports = class ContactController {
+    
+    //Init couche persistence
+    setPersistence(contactPersistence) {
+        this.contactPersistence = contactPersistence;
     }
+    
+    //****************************/
+    //****** CRUD CONTACTS *******/
+    //****************************/
+
+    /**
+     * met les informations du contact dans un objet "contact"
+     * si l'utilisateur a choisi un profil son obj et son profil est envoyé vers la fonction check_profil psui vers get puis vers la page index
+     * si le contact veut etre recontacté mais ne met pas de profil, redirection vers la fonction get puis vers la page index
+     * si le contact ne veut pas etre recontacté redirection vers get puis vers la page index
+     */
+    addContact(req, callback) {
+        console.log("Enregistrement Contact :"+req);
+        var contact = {
+            prenom: req.body.prenom,
+            email: req.body.email,
+            nom: req.body.nom,
+            telephone: req.body.telephone,
+            linkedin: req.body.linkedin,
+            viadeo: req.body.viadeo,
+            jeuMario: req.body.jeuMario,
+            jeuPepper: req.body.jeuPepper,
+            profil: req.body.button,
+            metier: req.body.metier,
+            accepteReContacte: req.body.ok,
+            id_salon: req.body.id_salon,
+            datePriseContact: new Date()
+        };
+        console.log("Le contact :"+contact);
+        this.contactPersistence.save(contact, callback);
+    };
+
+    /**
+     *Permet de lister tous les visiteurs pris lors d'un salon en particulier
+     */
+    getContactsParSalon(idSalon,res){
+        console.log("Liste les contacts pour le salon id="+idSalon);
+        this.contactPersistence.getContactsParSalon(idSalon,res);
+    };
+    
 
     /**
      *
@@ -11,7 +53,7 @@ module.exports = function(app, visiteurPersistence) {
      * renvoie un tableau qui contient les metiers
      */
 
-    function fill_res(metier, my_profil, j, res, k) {
+    fill_res(metier, my_profil, j, res, k) {
         var z = 0;
         while (metier[z]) {
             if (metier[z] == my_profil[j]) {
@@ -23,7 +65,7 @@ module.exports = function(app, visiteurPersistence) {
         return (res);
     }
 
-    function count_k(metier, my_profil, j, res, k) {
+    count_k(metier, my_profil, j, res, k) {
         var z = 0;
         while (metier[z]) {
             if (metier[z] == my_profil[j]) {
@@ -39,7 +81,7 @@ module.exports = function(app, visiteurPersistence) {
      * @param {*} metier => tab qui contient TOUS les métier sélectionnés
      * @param {*} profil => profil choisi
      */
-    function check_profil(metier, profil) {
+    check_profil(metier, profil) {
         var fs = require('fs');
         var json = JSON.parse(fs.readFileSync('./public/config.json', 'utf8'));
         var obj = json;
@@ -78,7 +120,7 @@ module.exports = function(app, visiteurPersistence) {
      * @param {*} callback
      * Permet de vérifier si le visiteur est déjà inscrit ou non si c'est le cas pas de persistance
      */
-    function get(visiteur, callback) {
+    get(visiteur, callback) {
         var MongoClient = require('mongodb').MongoClient;
         var url = "mongodb://localhost:27017/appliContact";
 
@@ -99,58 +141,4 @@ module.exports = function(app, visiteurPersistence) {
         });
     }
 
-    /**
-     *Permet de lister tous les visiteurs 
-     *pour la page list_visiteur de la page salon
-     */
-    app.get('/visiteur/aff/:id_salon', function(req, res) {
-        visiteurPersistence.get(req.params.id_salon, function(result) {
-            res.send(result);
-        });
-    });
-
-    /**
-     * met les informations du visiteur dans un objet "visiteur"
-     * si l'utilisateur a choisi un profil son obj et son profil est envoyé vers la fonction check_profil psui vers get puis vers la page index
-     * si le visiteur veut etre recontacté mais ne met pas de profil, redirection vers la fonction get puis vers la page index
-     * si le visiteur ne veut pas etre recontacté redirection vers get puis vers la page index
-     */
-    app.post('/saveUsers', function(req, res) {
-        console.log("Enregistrement Contact"+idSalon);
-        var maintenant = new Date();
-        var jour = maintenant.getDate();
-        var visiteur = {
-            prenom: req.body.prenom,
-            email: req.body.email,
-            nom: req.body.nom,
-            telephone: req.body.telephone,
-            linkedin: req.body.linkedin,
-            viadeo: req.body.viadeo,
-            competenceInfra: req.body.competenceInfra,
-            competenceSecu: req.body.competenceSecu,
-            competenceDigital: req.body.competenceDigital,
-            competenceTest: req.body.competenceTest,
-            jeuMario: req.body.jeuMario,
-            jeuPepper: req.body.jeuPepper,
-            profil: req.body.button,
-            metier: req.body.metier,
-            contact: req.body.ok,
-            id_salon: req.body.my_id,
-            date: jour
-        };
-        if (req.body.ok != "ok")
-            visiteur.metier = "NULL";
-        if (req.body.ok == "ok") {
-            if (visiteur.profil !== undefined) {
-                visiteur.metier = check_profil(req.body.metier, visiteur.profil);
-            }
-            visiteur.contact = "oui";
-            get(visiteur, callback);
-            res.send('200');
-        } else {
-            visiteur.contact = "non";
-            get(visiteur, callback);
-            res.send('200');
-        }
-    });
 };
