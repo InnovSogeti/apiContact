@@ -116,6 +116,7 @@ module.exports = function(app, visiteurPersistence) {
      * si le visiteur ne veut pas etre recontacté redirection vers get puis vers la page index
      */
     app.post('/saveUsers', function(req, res) {
+        console.log("Enregistrement Contact"+idSalon);
         var maintenant = new Date();
         var jour = maintenant.getDate();
         var visiteur = {

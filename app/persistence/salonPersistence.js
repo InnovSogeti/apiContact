@@ -8,7 +8,7 @@ module.exports = class SalonPersistence {
     //Find le salon correspondant à idSalon
     getSalon(idSalon, callback) {
         var query={
-            id_salon: sanitize(idSalon)
+            _id: new ObjectID(sanitize(idSalon))
         }
         console.log(query);
         var db = DB.getDB()
