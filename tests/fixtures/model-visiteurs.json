@@ -1,0 +1,36 @@
+{
+    "collections": {
+        "visiteurs": [
+            {
+                "prenom": "Brieuc",
+                "nom": "de Lantivy",
+                "email": "brieuc.de-lantivy@sogeti.com",
+                "telephone": "1234567",
+                "linkedin": "brieuclantivy",
+                "viadeo": "2222",
+                "jeuMario": null,
+                "jeuPepper": null,
+                "profil": null,
+                "metier": "NULL",
+                "contact": "non",
+                "jour": 20,
+                "id_salon": "DevFest_2017-11-16_2017-11-18"
+            },
+            {
+                "prenom": "Cécilia",
+                "nom": "Pinsard",
+                "email": "cecilia.pinsard@sogeti.com",
+                "telephone": "1234567",
+                "linkedin": "ceciliapinsard",
+                "viadeo": "2222",
+                "jeuMario": null,
+                "jeuPepper": null,
+                "profil": null,
+                "metier": "NULL",
+                "contact": "non",
+                "jour": 20,
+                "id_salon": "DevFest_2017-11-16_2017-11-18"
+            }
+        ]
+    }
+}
