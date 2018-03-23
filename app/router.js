@@ -89,6 +89,17 @@ router.get('/contact/salon/:id_salon', function (req, res) {
     });
 });
 
+// Ressource qui remonte tout les contacts
+router.get('/contact', function (req, res) {
+    contactController.getContacts(function (err, listeContacts) {
+        if(err) {
+            res.send(err);
+        }else{
+            res.send(listeContacts);
+        }
+    });
+});
+
 //****************************/
 //********* AUTRES ***********/
 //****************************/

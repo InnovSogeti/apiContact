@@ -29,4 +29,13 @@ module.exports = class ContactPersistence {
             }
         });
     }
+
+    // Renvoie la liste des contacts 
+    getAllContacts(callback) {
+        var db = DB.getDB()
+        db.collection(COLLECTION).find().toArray(function(err,doc){
+            callback(err,doc)
+        })
+    }
+
 }
