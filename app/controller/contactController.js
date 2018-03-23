@@ -44,6 +44,10 @@ module.exports = class ContactController {
         this.contactPersistence.getContactsParSalon(idSalon,res);
     };
     
+    //Retourne tous les contacts enregistrés
+    getContacts(callback) {
+        this.contactPersistence.getAllContacts(callback)
+    }
 
     /**
      *
