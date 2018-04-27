@@ -189,12 +189,12 @@ router.delete('/users/:id_users', function (req, res) {
 });
 
 router.post('/user/checkPassword', function (req, res) {
-    usersController.checkPassword(req, function(err, infoUser){
+    usersController.checkPassword(req, function(err, groupe){
       if (err) {
         res.send(err);
       }
       else {
-        res.send(infoUser);
+        res.send(groupe);
       }
     });
 })

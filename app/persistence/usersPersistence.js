@@ -8,10 +8,13 @@ module.exports = class UsersPersisence {
 
   checkPassword(req, callback) {
     var db = DB.getDB()
-    db.collection(COLLECTION).find({
-        login: req.body.login,
-        pwd: req.body.pwd
-      }).toArray(function(err,infoUser){
+
+    var query = {
+        login: sanitize(req.login),
+        pwd: sanitize(req.pwd)
+    }
+
+    db.collection(COLLECTION).findOne(query, function(err,infoUser){
           callback(err,infoUser)
       })
 }
@@ -21,10 +24,11 @@ module.exports = class UsersPersisence {
       var query = {
           _id: new ObjectID(sanitize(id_user))
       }
-      db.collection(COLLECTION).update(query, req)
-      db.collection(COLLECTION).findOne(query,function(err,doc){
-          callback(err,doc)
-      })
+      db.collection(COLLECTION).update(query, req,function(err,doc){
+          callback(err,doc)})
+      // db.collection(COLLECTION).findOne(query,function(err,doc){
+      //     callback(err,doc)
+      // })
     }
 
     // Renvoie la liste des utilisateurs
@@ -69,7 +73,7 @@ module.exports = class UsersPersisence {
     save(users, callback) {
         var db = DB.getDB()
         db.collection(COLLECTION).insertOne(users, function (err, docs) {
-            if (err) return cb(err)
+            if (err) return callback(err)
             callback("200", docs.ops[0]._id)
         });
     }
