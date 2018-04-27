@@ -34,7 +34,7 @@ module.exports = class SalonController {
         this.salonPersistence.getAllSalons(callback)
     }
 
-    // Suppression d'un salon 
+    // Suppression d'un salon
     deleteSalon(idSalon, callback) {
         console.log("Ctrl : Suppression du salon : "+idSalon);
         this.salonPersistence.delete(idSalon,function(err){
@@ -53,8 +53,8 @@ module.exports = class SalonController {
 
     /**
      * Vérifie le mot de pass entré par l'utilisateur
-     * @param {*} req 
-     * @param {*} res 
+     * @param {*} req
+     * @param {*} res
      */
     checkPassword(req, res) {
         if (req.params.mdp == 'a') {
@@ -64,18 +64,18 @@ module.exports = class SalonController {
         }
     }
 
-    
+
 
     /**
-     * Retourne le qui se passe aujourd'hui
-     * @param {*} res 
+     * Retourne le salon qui se passe aujourd'hui
+     * @param {*} res
      */
     getSalonCourant(callback) {
         this.salonPersistence.get_today(callback);
     }
     /**
      * Retourne le nombre de salons pour un jour donné
-     * @param {*} res 
+     * @param {*} res
      */
     getNbSalons(res) {
         this.salonPersistence.get_a_day(function (err, day) {
@@ -83,7 +83,3 @@ module.exports = class SalonController {
         });
     }
 }
-
-
-
-
