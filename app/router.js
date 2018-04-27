@@ -7,16 +7,21 @@ const SalonPersistence = require('./persistence/salonPersistence');
 const salonPersistence = new SalonPersistence();
 const ContactPersistence = require('./persistence/contactPersistence');
 const contactPersistence = new ContactPersistence();
-
+const UsersPersistence = require('./persistence/usersPersistence');
+const usersPersistence = new UsersPersistence();
 
 // Chargement des controleurs
 const SalonController = require('./controller/salonController');
 const salonController = new SalonController();
 salonController.setPersistence(salonPersistence);
+
 const ContactController = require('./controller/contactController');
 const contactController = new ContactController();
 contactController.setPersistence(contactPersistence);
 
+const UsersController = require('./controller/usersController');
+const usersController = new UsersController();
+usersController.setPersistence(usersPersistence);
 
 
 // Routage
@@ -105,10 +110,6 @@ router.get('/contact', function (req, res) {
 //****************************/
 
 
-router.get('/password/:mdp', function (req, res) {
-    salonController.checkPassword(req, res);
-})
-
 router.get('/salon/affSalon/', function (req, res) {
     salonController.getSalonCourant(function (err, today) {
         res.send(today);
@@ -133,5 +134,69 @@ router.post('/salon/add', function (req, res) {
     });
 });
 
-module.exports = router;
 
+
+//****************************/
+//******** Users **********/
+//****************************/
+//Ressource qui enregistre un nouveau contact
+router.post('/users/add', function (req, res) {
+    usersController.addUsers(req, function(retour,idCree){
+        console.log(retour)
+        console.log(idCree)
+        res.send(retour);
+    });
+});
+
+router.post('/users/update/:id_users', function (req, res) {
+    usersController.updateUsers(req.params.id_users, req, function(err, retour){
+      if (res) {
+        res.send(err)
+      } else {
+        res.send(retour);
+      }
+    });
+});
+
+// Ressource qui remonte tout les utilisateurs
+router.get('/users', function (req, res) {
+    usersController.getAllUsers(function (err, listeUser) {
+        if(err) {
+            res.send(err);
+        }else{
+            res.send(listeUser);
+        }
+    });
+});
+
+// Retourne le salon correspondant à id_salon
+router.get('/users/:id_users', function (req, res) {
+    console.log(req.params.id_user);
+    usersController.getUsers(req.params.id_users,function (err, users) {
+        if(err) {
+            res.send(err);
+        }else{
+            res.send(users);
+        }
+    });
+});
+
+// Ressource qui supprime un user
+router.delete('/users/:id_users', function (req, res) {
+    usersController.deleteusers(req.params.id_users, function(retour){
+        res.send(retour);
+    });
+});
+
+router.post('/user/checkPassword', function (req, res) {
+    usersController.checkPassword(req, function(err, infoUser){
+      if (err) {
+        res.send(err);
+      }
+      else {
+        res.send(infoUser);
+      }
+    });
+})
+
+module.exports = router;

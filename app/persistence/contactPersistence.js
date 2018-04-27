@@ -5,11 +5,11 @@ var ObjectID = require('mongodb').ObjectID;
 
 module.exports = class ContactPersistence {
 
-    
+
     /**
      * Enregistre un visiteur
-     * @param {*} visiteur 
-     * @param {*} callback 
+     * @param {*} visiteur
+     * @param {*} callback
      */
     save(contact, callback) {
         var db = DB.getDB()
@@ -30,7 +30,7 @@ module.exports = class ContactPersistence {
         });
     }
 
-    // Renvoie la liste des contacts 
+    // Renvoie la liste des contacts
     getAllContacts(callback) {
         var db = DB.getDB()
         db.collection(COLLECTION).find().toArray(function(err,doc){

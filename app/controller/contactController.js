@@ -1,10 +1,10 @@
 module.exports = class ContactController {
-    
+
     //Init couche persistence
     setPersistence(contactPersistence) {
         this.contactPersistence = contactPersistence;
     }
-    
+
     //****************************/
     //****** CRUD CONTACTS *******/
     //****************************/
@@ -24,12 +24,13 @@ module.exports = class ContactController {
             telephone: req.body.telephone,
             linkedin: req.body.linkedin,
             viadeo: req.body.viadeo,
-            jeuMario: req.body.jeuMario,
-            jeuPepper: req.body.jeuPepper,
+            // jeuMario: req.body.jeuMario,
+            // jeuPepper: req.body.jeuPepper,
             profil: req.body.button,
             metier: req.body.metier,
             accepteReContacte: req.body.ok,
             id_salon: req.body.id_salon,
+            autre: req.body.autre,
             datePriseContact: new Date()
         };
         console.log("Le contact :"+contact);
@@ -43,7 +44,7 @@ module.exports = class ContactController {
         console.log("Liste les contacts pour le salon id="+idSalon);
         this.contactPersistence.getContactsParSalon(idSalon,res);
     };
-    
+
     //Retourne tous les contacts enregistrés
     getContacts(callback) {
         this.contactPersistence.getAllContacts(callback)
@@ -81,7 +82,7 @@ module.exports = class ContactController {
     }
 
     /**
-     * 
+     *
      * @param {*} metier => tab qui contient TOUS les métier sélectionnés
      * @param {*} profil => profil choisi
      */
