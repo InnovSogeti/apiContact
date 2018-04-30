@@ -39,6 +39,17 @@ router.post('/salon/add', function (req, res) {
     });
 });
 
+// Permet d'update le salon
+router.post('/salon/update/:id_salon', function (req, res) {
+    salonController.updateSalon(req.params.id_salon, req, function(err, retour){
+      if (res) {
+        res.send(err)
+      } else {
+        res.send(retour);
+      }
+    });
+});
+
 // Retourne le salon correspondant à id_salon
 router.get('/salon/:id_salon', function (req, res) {
     console.log(req.params.id_salon);
@@ -80,6 +91,18 @@ router.post('/contact/add', function (req, res) {
         res.send(retour);
     });
 });
+
+// Permet d'update un contact
+router.post('/contact/update/:id_contact', function (req, res) {
+    contactController.updateContact(req.params.id_contact, req, function(err, retour){
+      if (res) {
+        res.send(err)
+      } else {
+        res.send(retour);
+      }
+    });
+});
+
 
 //Ressource qui remonte tous les contacts pris lors d'un salon.
 router.get('/contact/salon/:id_salon', function (req, res) {
@@ -139,6 +162,7 @@ router.post('/salon/add', function (req, res) {
 //****************************/
 //******** Users **********/
 //****************************/
+
 //Ressource qui enregistre un nouveau contact
 router.post('/users/add', function (req, res) {
     usersController.addUsers(req, function(retour,idCree){
@@ -148,7 +172,7 @@ router.post('/users/add', function (req, res) {
     });
 });
 
-router.post('/users/update/:id_users', function (req, res) {
+router.post('/user/update/:id_users', function (req, res) {
     usersController.updateUsers(req.params.id_users, req, function(err, retour){
       if (res) {
         res.send(err)
@@ -169,10 +193,10 @@ router.get('/users', function (req, res) {
     });
 });
 
-// Retourne le salon correspondant à id_salon
-router.get('/users/:id_users', function (req, res) {
+// Retourne le user correspondant à id_user
+router.get('/user/:id_user', function (req, res) {
     console.log(req.params.id_user);
-    usersController.getUsers(req.params.id_users,function (err, users) {
+    usersController.getUsers(req.params.id_user,function (err, users) {
         if(err) {
             res.send(err);
         }else{

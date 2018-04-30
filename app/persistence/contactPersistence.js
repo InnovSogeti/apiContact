@@ -19,6 +19,15 @@ module.exports = class ContactPersistence {
         });
     }
 
+    updateContact(id_contact, req, callback){
+      var db = DB.getDB()
+      var query = {
+        _id: new ObjectID(sanitize(id_contact))
+      }
+      db.collection(COLLECTION).update(query, req,function(err,doc){
+          callback(err,doc)})
+    }
+
     getContactsParSalon(id,callback){
         var db = DB.getDB()
         db.collection(COLLECTION).find({ id_salon: id }).toArray(function (err, results) {

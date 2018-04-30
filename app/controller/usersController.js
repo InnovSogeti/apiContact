@@ -11,23 +11,22 @@ module.exports = class UsersController {
 
     //Ajout d'un user
     addUsers(req, callback) {
-        console.log(req.body)
-        var id = req.body.nom + '_' + req.body.prenom + '_' + req.body.groupe;
-        var users = {
-            login : req.body.login,
-            pwd : req.body.pwd,
-            groupe : req.body.groupe,
-            mail : req.body.mail,
-            nom : req.body.nom,
-            prenom : req.body.prenom,
-            telPro : req.body.telPro,
-            id_users : id
-        };
-        this.usersPersistence.save(users, callback);
+      console.log(req.body);
+      var users = {
+        login : req.body.login,
+        pwd : req.body.pwd,
+        groupe : req.body.groupe,
+        mail : req.body.mail,
+        nom : req.body.nom,
+        prenom : req.body.prenom,
+        telPro : req.body.telPro
+      };
+      this.usersPersistence.save(users, callback);
     }
+
+
     updateUsers(id_user, req, callback) {
         console.log(req.body)
-        var id = req.body.nom + '_' + req.body.prenom + '_' + req.body.groupe;
         var newdoc = {
             login : req.body.login,
             pwd : req.body.pwd,
@@ -35,15 +34,14 @@ module.exports = class UsersController {
             mail : req.body.mail,
             nom : req.body.nom,
             prenom : req.body.prenom,
-            telPro : req.body.telPro,
-            id_users : id
+            telPro : req.body.telPro
         };
         this.usersPersistence.update(id_user, newdoc, callback);
     }
 
     //Retourne le user correspondant à iduser
-    getUsers(idUsers,callback){
-        this.usersPersistence.getUsers(idUsers,callback)
+    getUser(id_user,callback){
+        this.usersPersistence.getUser(id_user, callback)
     }
 
     //Retourne tous les users enregistrés
@@ -65,13 +63,10 @@ module.exports = class UsersController {
     checkPassword(req, callback){
       console.log("Ctrl : vérification du mdp de l'utilisateur : "+ req.body.login);
       this.usersPersistence.checkPassword(req.body, function(err,infoUser){
-
           //Retour OK
           console.log(infoUser);
           callback(err,infoUser.groupe);
       });
-
-
     }
 
 }
