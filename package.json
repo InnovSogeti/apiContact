@@ -15,7 +15,8 @@
     "express": "^4.16.2",
     "mongo-sanitize": "^1.0.0",
     "mongodb": "^2.2.33",
-    "monk": "^6.0.5"
+    "monk": "^6.0.5",
+    "npm": "^6.0.0"
   },
   "devDependencies": {
     "mockery": "^2.1.0",
