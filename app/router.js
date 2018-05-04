@@ -85,11 +85,15 @@ router.delete('/salon/:id_salon', function (req, res) {
 //****************************/
 //Ressource qui enregistre un nouveau contact
 router.post('/contact/add', function (req, res) {
-    contactController.addContact(req, function(retour,idCree){
-        console.log(retour)
-        console.log(idCree)
-        res.send(retour);
-    });
+    try {
+        contactController.addContact(req, function(retour,idCree){
+            console.log(retour)
+            console.log(idCree)
+            res.send(retour);
+        });
+    } catch(e) {
+        console.error(e);
+    }
 });
 
 // Permet d'update un contact
