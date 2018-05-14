@@ -64,8 +64,14 @@ module.exports = class UsersController {
       console.log("Ctrl : vérification du mdp de l'utilisateur : "+ req.body.login);
       this.usersPersistence.checkPassword(req.body, function(err,infoUser){
           //Retour OK
-          console.log(infoUser.groupe);
-          callback(err,infoUser);
+          try {
+            console.log(infoUser.groupe);
+            callback(err,infoUser);
+
+          } catch (error) {
+              err = "Login ou mot de passe incorrect";
+              callback(err);
+          } 
       });
     }
 

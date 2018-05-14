@@ -23,7 +23,6 @@ const UsersController = require('./controller/usersController');
 const usersController = new UsersController();
 usersController.setPersistence(usersPersistence);
 
-
 // Routage
 
 //****************************/
