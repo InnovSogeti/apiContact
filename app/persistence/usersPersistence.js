@@ -70,19 +70,19 @@ module.exports = class UsersPersisence {
      */
     save(users, callback) {
       var db = DB.getDB()
-      var query={
-        login: sanitize(users.login)
-      }
-      var res = db.collection(COLLECTION).findOne(query)
-      if (res) {
-        console.log(res);  
-        callback("Login existe déjà", "200")
-      }
-      else {
+    //   var query={
+    //     login: sanitize(users.login)
+    //   }
+    //   var res = db.collection(COLLECTION).findOne(query)
+    //   if (res) {
+    //     console.log(res);  
+    //     callback("Login existe déjà", "200")
+    //   }
+    //   else {
         db.collection(COLLECTION).insertOne(users, function (err, docs) {
             if (err) return callback(err)
             callback("200", docs.ops[0]._id)
         });
       }
-    }
+    // }
   }

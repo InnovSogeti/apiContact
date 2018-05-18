@@ -98,8 +98,7 @@ router.post('/authenticate', function(req, res) {
 
 router.use(function(req, res, next) {
 
-    // const excluded = ['/contact/add'];
-    const excluded = ['/authenticate'];
+    const excluded = ['/authenticate', '/contact/add','/salon/:id_salon'];
 
     if (excluded.indexOf(req.url) > -1) return next();
     // check header or url parameters or post parameters for token
