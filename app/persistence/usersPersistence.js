@@ -75,6 +75,7 @@ module.exports = class UsersPersisence {
       }
       var res = db.collection(COLLECTION).findOne(query)
       if (res) {
+        console.log(res);  
         callback("Login existe déjà", "200")
       }
       else {

@@ -11,7 +11,7 @@ module.exports = class UsersController {
 
     //Ajout d'un user
     addUsers(req, callback) {
-      console.log(req.body);
+    //   console.log(req.body);
       var users = {
         login : req.body.login,
         pwd : req.body.pwd,

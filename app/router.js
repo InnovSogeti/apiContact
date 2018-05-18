@@ -1,6 +1,17 @@
 // Chargement des modules
 const express = require('express');
 const router = express.Router();
+var app         = express();
+var bodyParser  = require('body-parser');
+var morgan      = require('morgan');
+var mongoose    = require('mongoose');
+var config = require('./config'); // get our config file
+var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
+app.set('superSecret', config.secret); // secret variable
+
+const DB = require('../db')
+const COLLECTION = 'users'
+var sanitize = require('mongo-sanitize');
 
 //Chargement des persistences
 const SalonPersistence = require('./persistence/salonPersistence');
@@ -23,7 +34,100 @@ const UsersController = require('./controller/usersController');
 const usersController = new UsersController();
 usersController.setPersistence(usersPersistence);
 
+// router.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Headers","*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     // res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+//     next();
+//   })
+router.use(function(request, response, next) {
+    response.header("Access-Control-Allow-Origin", "*");
+    response.header("Access-Control-Allow-Headers", "*");
+    next();
+});
+router.options('/*', function (request, response, next) {
+    response.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
+    response.send();
+});
 // Routage
+//****************************/
+//********* Authenticate ***********/
+//****************************/
+
+router.post('/authenticate', function(req, res) {
+
+    // find the user
+    var db = DB.getDB()
+
+    var query = {
+        login: sanitize(req.body.login),
+    }
+
+	db.collection(COLLECTION).findOne(query, function(err, user) {
+
+		if (err) throw err;
+
+		if (!user) {
+			res.json({ success: false, message: 'Authentication failed. User not found.' });
+		} else if (user) {
+
+			// check if password matches
+			if (user.pwd != req.body.pwd) {
+				res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+			} else {
+                
+				// if user is found and password is right
+				// create a token
+				var payload = {
+					admin: user.groupe	
+				}
+				var token = jwt.sign(payload, app.get('superSecret'), {
+					expiresIn: 86400 // expires in 24 hours
+                });
+                var groupe = user.groupe;
+				res.json({
+					success: true,
+					groupe: groupe,
+					token: token
+				});
+			}		
+		}
+	});
+});
+
+
+router.use(function(req, res, next) {
+
+    // const excluded = ['/contact/add'];
+    const excluded = ['/authenticate'];
+
+    if (excluded.indexOf(req.url) > -1) return next();
+    // check header or url parameters or post parameters for token
+    
+    //var token = req.body.token;    
+    var token = req.headers['x-access-token'];  
+  
+    	// decode token
+	if (token) {
+		// verifies secret and checks exp
+		jwt.verify(token, app.get('superSecret'), function(err, decoded) {	        		
+			if (err) {
+				return res.json({ success: false, message: 'Failed to authenticate token.' });		
+			} else {
+				// if everything is good, save to request for use in other routes
+				req.decoded = decoded;	
+				next();
+			} 
+		});
+	} else {
+		// if there is no token
+		// return an error
+		return res.status(403).send({ 
+			success: false, 
+			message: 'No token provided.'
+		});		
+	}
+});
 
 //****************************/
 //********* SALONS ***********/
@@ -40,11 +144,11 @@ router.post('/salon/add', function (req, res) {
 
 // Permet d'update le salon
 router.post('/salon/update/:id_salon', function (req, res) {
-    salonController.updateSalon(req.params.id_salon, req, function(err, retour){
+    salonController.updateSalon(req.params.id_salon, req, function(err, newsalon){
       if (res) {
         res.send(err)
       } else {
-        res.send(retour);
+        res.send(newsalon);
       }
     });
 });
