@@ -1,6 +1,17 @@
 // Chargement des modules
 const express = require('express');
 const router = express.Router();
+var app         = express();
+var bodyParser  = require('body-parser');
+var morgan      = require('morgan');
+var mongoose    = require('mongoose');
+var config = require('./config'); // get our config file
+var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
+app.set('superSecret', config.secret); // secret variable
+
+const DB = require('../db')
+const COLLECTION = 'users'
+var sanitize = require('mongo-sanitize');
 
 //Chargement des persistences
 const SalonPersistence = require('./persistence/salonPersistence');
@@ -23,8 +34,99 @@ const UsersController = require('./controller/usersController');
 const usersController = new UsersController();
 usersController.setPersistence(usersPersistence);
 
-
+// router.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Headers","*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     // res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+//     next();
+//   })
+router.use(function(request, response, next) {
+    response.header("Access-Control-Allow-Origin", "*");
+    response.header("Access-Control-Allow-Headers", "*");
+    next();
+});
+router.options('/*', function (request, response, next) {
+    response.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
+    response.send();
+});
 // Routage
+//****************************/
+//********* Authenticate ***********/
+//****************************/
+
+router.post('/authenticate', function(req, res) {
+
+    // find the user
+    var db = DB.getDB()
+
+    var query = {
+        login: sanitize(req.body.login),
+    }
+
+	db.collection(COLLECTION).findOne(query, function(err, user) {
+
+		if (err) throw err;
+
+		if (!user) {
+			res.json({ success: false, message: 'Authentication failed. User not found.' });
+		} else if (user) {
+
+			// check if password matches
+			if (user.pwd != req.body.pwd) {
+				res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+			} else {
+                
+				// if user is found and password is right
+				// create a token
+				var payload = {
+					admin: user.groupe	
+				}
+				var token = jwt.sign(payload, app.get('superSecret'), {
+					expiresIn: 86400 // expires in 24 hours
+                });
+                var groupe = user.groupe;
+				res.json({
+					success: true,
+					groupe: groupe,
+					token: token
+				});
+			}		
+		}
+	});
+});
+
+
+router.use(function(req, res, next) {
+
+    const excluded = ['/authenticate', '/contact/add','/salon/:id_salon'];
+
+    if (excluded.indexOf(req.url) > -1) return next();
+    // check header or url parameters or post parameters for token
+    
+    //var token = req.body.token;    
+    var token = req.headers['x-access-token'];  
+  
+    	// decode token
+	if (token) {
+		// verifies secret and checks exp
+		jwt.verify(token, app.get('superSecret'), function(err, decoded) {	        		
+			if (err) {
+				return res.json({ success: false, message: 'Failed to authenticate token.' });		
+			} else {
+				// if everything is good, save to request for use in other routes
+				req.decoded = decoded;	
+				next();
+			} 
+		});
+	} else {
+		// if there is no token
+		// return an error
+		return res.status(403).send({ 
+			success: false, 
+			message: 'No token provided.'
+		});		
+	}
+});
 
 //****************************/
 //********* SALONS ***********/
@@ -36,6 +138,17 @@ router.post('/salon/add', function (req, res) {
         console.log(retour)
         console.log(idCree)
         res.send(retour);
+    });
+});
+
+// Permet d'update le salon
+router.post('/salon/update/:id_salon', function (req, res) {
+    salonController.updateSalon(req.params.id_salon, req, function(err, newsalon){
+      if (res) {
+        res.send(err)
+      } else {
+        res.send(newsalon);
+      }
     });
 });
 
@@ -74,12 +187,28 @@ router.delete('/salon/:id_salon', function (req, res) {
 //****************************/
 //Ressource qui enregistre un nouveau contact
 router.post('/contact/add', function (req, res) {
-    contactController.addContact(req, function(retour,idCree){
-        console.log(retour)
-        console.log(idCree)
+    try {
+        contactController.addContact(req, function(retour,idCree){
+            console.log(retour)
+            console.log(idCree)
+            res.send(retour);
+        });
+    } catch(e) {
+        console.error(e);
+    }
+});
+
+// Permet d'update un contact
+router.post('/contact/update/:id_contact', function (req, res) {
+    contactController.updateContact(req.params.id_contact, req, function(err, retour){
+      if (res) {
+        res.send(err)
+      } else {
         res.send(retour);
+      }
     });
 });
+
 
 //Ressource qui remonte tous les contacts pris lors d'un salon.
 router.get('/contact/salon/:id_salon', function (req, res) {
@@ -139,6 +268,7 @@ router.post('/salon/add', function (req, res) {
 //****************************/
 //******** Users **********/
 //****************************/
+
 //Ressource qui enregistre un nouveau contact
 router.post('/users/add', function (req, res) {
     usersController.addUsers(req, function(retour,idCree){
@@ -148,7 +278,7 @@ router.post('/users/add', function (req, res) {
     });
 });
 
-router.post('/users/update/:id_users', function (req, res) {
+router.post('/user/update/:id_users', function (req, res) {
     usersController.updateUsers(req.params.id_users, req, function(err, retour){
       if (res) {
         res.send(err)
@@ -169,10 +299,10 @@ router.get('/users', function (req, res) {
     });
 });
 
-// Retourne le salon correspondant à id_salon
-router.get('/users/:id_users', function (req, res) {
+// Retourne le user correspondant à id_user
+router.get('/user/:id_user', function (req, res) {
     console.log(req.params.id_user);
-    usersController.getUsers(req.params.id_users,function (err, users) {
+    usersController.getUsers(req.params.id_user,function (err, users) {
         if(err) {
             res.send(err);
         }else{
@@ -189,12 +319,12 @@ router.delete('/users/:id_users', function (req, res) {
 });
 
 router.post('/user/checkPassword', function (req, res) {
-    usersController.checkPassword(req, function(err, infoUser){
+    usersController.checkPassword(req, function(err, groupe){
       if (err) {
         res.send(err);
       }
       else {
-        res.send(infoUser);
+        res.send(groupe);
       }
     });
 })

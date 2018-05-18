@@ -17,8 +17,16 @@ module.exports = class SalonPersistence {
         })
     }
 
+    updateSalon(id_salon, req, callback){
+      var db = DB.getDB()
+      var query = {
+        _id: new ObjectID(sanitize(id_salon))
+      }
+      db.collection(COLLECTION).update(query, req,function(err,doc){
+          callback(err,doc)})
+    }
 
-    // Renvoie la liste des salons 
+    // Renvoie la liste des salons
     getAllSalons(callback) {
         var db = DB.getDB()
         db.collection(COLLECTION).find().toArray(function(err,doc){
@@ -35,15 +43,12 @@ module.exports = class SalonPersistence {
         var query={
             _id: new ObjectID(sanitize(idSalon))
         }
-        //db.collection(COLLECTION).remove(query, (err, item) => {
-        //    callback(err);
-        //})
         db.collection(COLLECTION).remove(query, function(err,doc){
             if(err) console.log("DB : log : "+err);
             callback(err)
         })
     }
-    
+
     /**
      * Enregistre un salon
      */

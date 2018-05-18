@@ -8,24 +8,26 @@ module.exports = class UsersPersisence {
 
   checkPassword(req, callback) {
     var db = DB.getDB()
-    db.collection(COLLECTION).find({
-        login: req.body.login,
-        pwd: req.body.pwd
-      }).toArray(function(err,infoUser){
+
+    var query = {
+        login: sanitize(req.login),
+        pwd: sanitize(req.pwd)
+    }
+
+    db.collection(COLLECTION).findOne(query, function(err,infoUser){
           callback(err,infoUser)
       })
 }
 
-    update(id_user, req, callback){
-      var db = DB.getDB()
-      var query = {
-          _id: new ObjectID(sanitize(id_user))
-      }
-      db.collection(COLLECTION).update(query, req)
-      db.collection(COLLECTION).findOne(query,function(err,doc){
-          callback(err,doc)
-      })
+
+  update(id_user, req, callback){
+    var db = DB.getDB()
+    var query = {
+      _id: new ObjectID(sanitize(id_user))
     }
+    db.collection(COLLECTION).update(query, req,function(err,doc){
+        callback(err,doc)})
+  }
 
     // Renvoie la liste des utilisateurs
     getAllUsers(callback) {
@@ -37,9 +39,9 @@ module.exports = class UsersPersisence {
 
 
     //Find l'utilisateur qui correspondant à idUsers
-    getUsers(idUsers, callback) {
+    getUser(id_user, callback) {
         var query={
-            _id: new ObjectID(sanitize(idUsers))
+            _id: new ObjectID(sanitize(id_user))
         }
         console.log(query);
         var db = DB.getDB()
@@ -67,12 +69,20 @@ module.exports = class UsersPersisence {
      * Enregistre un user
      */
     save(users, callback) {
-        var db = DB.getDB()
+      var db = DB.getDB()
+    //   var query={
+    //     login: sanitize(users.login)
+    //   }
+    //   var res = db.collection(COLLECTION).findOne(query)
+    //   if (res) {
+    //     console.log(res);  
+    //     callback("Login existe déjà", "200")
+    //   }
+    //   else {
         db.collection(COLLECTION).insertOne(users, function (err, docs) {
-            if (err) return cb(err)
+            if (err) return callback(err)
             callback("200", docs.ops[0]._id)
         });
-    }
-
-
-}
+      }
+    // }
+  }
