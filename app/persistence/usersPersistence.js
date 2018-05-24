@@ -6,19 +6,27 @@ var ObjectID = require('mongodb').ObjectID;
 module.exports = class UsersPersisence {
 
 
-  checkPassword(req, callback) {
-    var db = DB.getDB()
+    checkPassword(req, callback) {
+        var db = DB.getDB()
+        var query = {
+            login: sanitize(req.login),
+            pwd: sanitize(req.pwd)
+        }
 
-    var query = {
-        login: sanitize(req.login),
-        pwd: sanitize(req.pwd)
+        db.collection(COLLECTION).findOne(query, function(err,infoUser){
+            callback(err,infoUser)
+        })
     }
-
-    db.collection(COLLECTION).findOne(query, function(err,infoUser){
-          callback(err,infoUser)
-      })
-}
-
+    checkLogin(users, callback) {
+        var db = DB.getDB()
+        var query={
+            login: sanitize(users.login)
+        }
+        db.collection(COLLECTION).findOne(query, function(err,infoUser){
+            // console.log(infoUser);
+            callback(null ,infoUser == null);           
+        })
+    }
 
   update(id_user, req, callback){
     var db = DB.getDB()
@@ -70,19 +78,10 @@ module.exports = class UsersPersisence {
      */
     save(users, callback) {
       var db = DB.getDB()
-    //   var query={
-    //     login: sanitize(users.login)
-    //   }
-    //   var res = db.collection(COLLECTION).findOne(query)
-    //   if (res) {
-    //     console.log(res);  
-    //     callback("Login existe déjà", "200")
-    //   }
-    //   else {
+
         db.collection(COLLECTION).insertOne(users, function (err, docs) {
             if (err) return callback(err)
             callback("200", docs.ops[0]._id)
         });
       }
-    // }
   }
