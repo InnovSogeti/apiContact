@@ -34,12 +34,6 @@ const UsersController = require('./controller/usersController');
 const usersController = new UsersController();
 usersController.setPersistence(usersPersistence);
 
-// router.use(function(req, res, next) {
-//     res.header("Access-Control-Allow-Headers","*");
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//     // res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
-//     next();
-//   })
 router.use(function(request, response, next) {
     response.header("Access-Control-Allow-Origin", "*");
     response.header("Access-Control-Allow-Headers", "*");
@@ -97,10 +91,10 @@ router.post('/authenticate', function(req, res) {
 
 
 router.use(function(req, res, next) {
-
-    const excluded = ['/authenticate', '/contact/add','/salon/:id_salon'];
-
-    if (excluded.indexOf(req.url) > -1) return next();
+    var salon = /\/salon\/*/;
+    const excluded = ['/authenticate','/users/add', '/contact/add', '/getSalonCourant', salon ];
+    
+    if ((excluded.indexOf(req.url) > -1)|| req.url.match(salon)) return next();
     // check header or url parameters or post parameters for token
     
     //var token = req.body.token;    
@@ -239,6 +233,17 @@ router.get('/contact', function (req, res) {
 //****************************/
 
 
+
+router.get('/getSalonCourant', function (req, res) {
+    salonController.get_salon_courant(function (err, saloncourant) {
+        if(err) {
+            res.send(err);
+        }else{
+            res.send(saloncourant);
+        }
+    });
+});
+
 router.get('/salon/affSalon/', function (req, res) {
     salonController.getSalonCourant(function (err, today) {
         res.send(today);
@@ -271,17 +276,26 @@ router.post('/salon/add', function (req, res) {
 
 //Ressource qui enregistre un nouveau contact
 router.post('/users/add', function (req, res) {
-    usersController.addUsers(req, function(retour,idCree){
-        console.log(retour)
-        console.log(idCree)
-        res.send(retour);
+    usersController.addUsers(req, function(err,retour){
+            console.log(retour)
+            console.log(err)
+            res.send(retour);
     });
 });
+//     usersController.addUsers(req, function(retour,idCree){
+//         if (retour) {
+//             res.send(retour);
+//         }
+//         console.log(retour)
+//         // console.log(idCree)
+//         res.send(retour);
+//     });
+// });
 
 router.post('/user/update/:id_users', function (req, res) {
     usersController.updateUsers(req.params.id_users, req, function(err, retour){
-      if (res) {
-        res.send(err)
+      if (err) {
+        err.send(err)
       } else {
         res.send(retour);
       }
@@ -302,7 +316,7 @@ router.get('/users', function (req, res) {
 // Retourne le user correspondant à id_user
 router.get('/user/:id_user', function (req, res) {
     console.log(req.params.id_user);
-    usersController.getUsers(req.params.id_user,function (err, users) {
+    usersController.getUser(req.params.id_user,function (err, users) {
         if(err) {
             res.send(err);
         }else{

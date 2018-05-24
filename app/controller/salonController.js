@@ -91,4 +91,8 @@ module.exports = class SalonController {
             res.send(day);
         });
     }
+    get_salon_courant(callback) {
+        this.salonPersistence.get_salon_courant(callback);
+    }
+    
 }
