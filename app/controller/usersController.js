@@ -11,19 +11,33 @@ module.exports = class UsersController {
 
     //Ajout d'un user
     addUsers(req, callback) {
-    //   console.log(req.body);
-      var users = {
-        login : req.body.login,
-        pwd : req.body.pwd,
-        groupe : req.body.groupe,
-        mail : req.body.mail,
-        nom : req.body.nom,
-        prenom : req.body.prenom,
-        telPro : req.body.telPro
-      };
-      this.usersPersistence.save(users, callback);
+        // this.usersPersistence.checkLogin(req.body, function(err, retour) {
+        //     if (retour) {
+        //         var users = {
+        //             login : req.body.login,
+        //             pwd : req.body.pwd,
+        //             groupe : req.body.groupe,
+        //             mail : req.body.mail,
+        //             nom : req.body.nom,
+        //             prenom : req.body.prenom,
+        //             telPro : req.body.telPro
+        //         };
+        //         this.usersPersistence.save(users, callback);
+        //     }else {
+        //         callback("le login existe déjà");
+        //     }
+        // });   
+        var users = {
+            login : req.body.login,
+            pwd : req.body.pwd,
+            groupe : req.body.groupe,
+            mail : req.body.mail,
+            nom : req.body.nom,
+            prenom : req.body.prenom,
+            telPro : req.body.telPro
+        };
+        this.usersPersistence.save(users, callback);   
     }
-
 
     updateUsers(id_user, req, callback) {
         console.log(req.body)
