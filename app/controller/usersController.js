@@ -75,17 +75,13 @@ module.exports = class UsersController {
     }
 
     checkPassword(req, callback){
-      console.log("Ctrl : vérification du mdp de l'utilisateur : "+ req.body.login);
-      this.usersPersistence.checkPassword(req.body, function(err,infoUser){
-          //Retour OK
-          try {
-            console.log(infoUser.groupe);
-            callback(err,infoUser);
-
-          } catch (error) {
-              err = "Login ou mot de passe incorrect";
-              callback(err);
-          } 
+        console.log("Ctrl : vérification du mdp de l'utilisateur : "+ req.body.login);
+        this.usersPersistence.checkPassword(req.body, function(err,infoUser){
+            if (err) {
+                callback(err);        
+            } else {
+                callback(infoUser);
+            }
       });
     }
 

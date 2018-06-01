@@ -49,50 +49,22 @@ router.options('/*', function (request, response, next) {
 //****************************/
 
 router.post('/authenticate', function(req, res) {
-
-    // find the user
-    var db = DB.getDB()
-
-    var query = {
-        login: sanitize(req.body.login),
-    }
-
-	db.collection(COLLECTION).findOne(query, function(err, user) {
-
-		if (err) throw err;
-
-		if (!user) {
-			res.json({ success: false, message: 'Authentication failed. User not found.' });
-		} else if (user) {
-
-			// check if password matches
-			if (user.pwd != req.body.pwd) {
-				res.json({ success: false, message: 'Authentication failed. Wrong password.' });
-			} else {
-                
-				// if user is found and password is right
-				// create a token
-				var payload = {
-					admin: user.groupe	
-				}
-				var token = jwt.sign(payload, app.get('superSecret'), {
-					expiresIn: 86400 // expires in 24 hours
-                });
-                var groupe = user.groupe;
-				res.json({
-					success: true,
-					groupe: groupe,
-					token: token
-				});
-			}		
-		}
-	});
+    usersController.checkPassword(req, function(err ,info){
+        if (err) {
+            console.log(err)
+            res.send(err) 
+        } 
+        else{
+            console.log(info)
+            res.send(info);
+        }      
+        
+    });
 });
-
 
 router.use(function(req, res, next) {
     var salon = /\/salon\/*/;
-    const excluded = ['/authenticate','/users/add', '/contact/add', '/getSalonCourant', salon ];
+    const excluded = ['/authenticate', '/contact/add', '/getSalonCourant'];
     
     if ((excluded.indexOf(req.url) > -1)|| req.url.match(salon)) return next();
     // check header or url parameters or post parameters for token
