@@ -49,14 +49,14 @@ router.options('/*', function (request, response, next) {
 //****************************/
 
 router.post('/authenticate', function(req, res) {
-    usersController.checkPassword(req, function(err ,info){
+    usersController.checkPassword(req, function(err ,token){
         if (err) {
             console.log(err)
             res.send(err) 
         } 
         else{
             console.log(info)
-            res.send(info);
+            res.send(token);
         }      
         
     });
@@ -70,7 +70,7 @@ router.use(function(req, res, next) {
     // check header or url parameters or post parameters for token
     
     //var token = req.body.token;    
-    var token = req.headers['x-access-token'];  
+    var token = req.headers['x-access-token'] || req.params["token"];  
   
     	// decode token
 	if (token) {
@@ -107,16 +107,14 @@ router.post('/salon/add', function (req, res) {
     });
 });
 
-// Permet d'update le salon
-router.post('/salon/update/:id_salon', function (req, res) {
-    salonController.updateSalon(req.params.id_salon, req, function(err, newsalon){
-      if (res) {
-        res.send(err)
-      } else {
-        res.send(newsalon);
-      }
+router.post(function (req, res) {
+    salonController.addSalon(req, function(retour,idCree){
+        console.log(retour)
+        console.log(idCree)
+        res.send(retour);
     });
 });
+
 
 // Retourne le salon correspondant à id_salon
 router.get('/salon/:id_salon', function (req, res) {
