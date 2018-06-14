@@ -15,9 +15,8 @@ ul.name {
 }
 
 header {
-    background-color: #ff4511;
+    background-color: #ff6e46;
     color: #000000;
-    padding: 25px;
 }
 
 #all {
@@ -49,19 +48,37 @@ div {
     border-color: #ff4511 #ff4511 #ff4511;
 }
 
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
+.panel-default>.panel-heading a {
+    display: inline-block;
     width: 100%;
 }
 
-td,
-th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
+label {
+    font-size: 1.1em;
 }
 
-tr:nth-child(even) {
-    background-color: #dddddd;
+.champs-obligatoires {
+    text-align: right;
+    color: red;
+}
+
+oser {
+    background-image: url('../images/oser.png');
+    background-size: 100%;
+    height: 140px;
+    width: 100%;
+    padding: 25px;
+}
+
+h1.title {
+    color: white;
+    font-size: 4vw;
+    margin-top: 4vw;
+    margin-bottom: 2vw;
+}
+
+.logo {
+    width: 100%;
+    margin-top: 2vw;
+    margin-bottom: 2vw;
 }

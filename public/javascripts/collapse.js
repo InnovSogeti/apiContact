@@ -1,4 +1,4 @@
-function showRadio() {
+function showRadio() {    
   var n = document.form.btnr.length;
   for(i=1;i<=n;i++) {
       if(document.getElementById('choix'+i).checked == true) {

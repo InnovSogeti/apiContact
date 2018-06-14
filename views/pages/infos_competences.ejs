@@ -1,0 +1,99 @@
+<label>J'autorise Sogeti à garder mes infos pour me recontacter</label></br>
+<input name="ok" type="radio" data-toggle="collapse" data-target=".collapseOne.in" value="false" checked /> Non &#160&#160&#160&#160&#160&#160
+<input name="ok" type="radio" data-toggle="collapse" data-target=".collapseOne:not(.in)" value="true" /> Oui
+<script type="text/javascript" src="/javascripts/collapse.js"></script>
+<div class="panel-group" id="accordion">
+    <div class="collapseOne panel-collapse collapse">
+        </br>
+        <label>Votre profil </label>
+        <script type="text/javascript">
+            function showRadio() {                
+                var n = 0;
+                $.getJSON('/config.json', function(data) {
+                    var obj = data; //tous le fichier JSON dans un obj
+                    var metier = Object.keys(obj);
+                    while (metier[n])
+                        n++;
+                    for (i = 1; i <= n; i++) {
+                        if (document.getElementById('choix' + i).checked == true) {
+                            document.getElementById('D' + i).style.display = "block";
+                        } else {
+                            document.getElementById('D' + i).style.display = "none";
+                        }
+                    }
+                });
+            }
+        </script>
+        <div>
+            <p id="metier">
+
+            </p>
+        </div>
+        </br>
+        <div id="checkbox">
+        </div>
+        <script>
+            function replaceAll(machaine, chaineARemaplacer, chaineDeRemplacement) {
+                return machaine.replace(new RegExp(chaineARemaplacer, 'g'), chaineDeRemplacement);
+            }
+            $(function() {
+                $.getJSON('/config.json', function(data) {
+                    var obj = data; //tous le fichier JSON dans un obj
+                    var metier = Object.keys(obj);
+                    var i = 0;
+                    var choix;
+                    var value;
+                    var space = " ";
+                    while (metier[i]) {
+                        choix = "<label><input type=\"radio\" id=\"choix";
+                        choix = choix + (i + 1);
+                        choix = choix + "\" name=\"button\" value=\""
+                        value = replaceAll(metier[i], ' ', '_');
+                        choix = choix + value;
+                        choix = choix + "\" onclick=\"showRadio()\" />"
+                        space = space + metier[i];
+                        choix = choix + space;
+                        space = " ";
+                        choix = choix + "</label></br>"
+                        document.getElementById("metier").innerHTML += choix;
+                        i++;
+                    }
+                    i = 0;
+                    var z = 0;
+                    var name = 'D';
+                    var save = 'D';
+                    var all;
+                    var inter;
+                    var int = 1;
+                    var t = 1;
+                    while (metier[i]) {
+                        all = "<div id=\"";
+                        inter = data[metier[i]];
+                        inter = inter.split(',')
+                        z = 1;
+                        name = save;
+                        name = name + t;
+                        all = all + name;
+                        all = all + "\" style=\"display: none;\"><label>Votre metier :</label></br>"
+                        $('#checkbox').append(all);
+                        var append;
+                        while (inter[z]) {
+                            value = replaceAll(inter[z], ' ', '_');
+                            append = "<label><input name= \"metier\"";
+                            append = append + "value=\"";
+                            append = append + value;
+                            append = append + "\"type=\"checkbox\"/>";
+                            append = append + inter[z];
+                            append = append + "</label> </br>";
+                            $("#D" + int).append(append);
+                            z++;
+                        }
+                        i++;
+                        t++;
+                        int++;
+                    }
+                });
+            });
+        </script>
+    </div>
+</div>
