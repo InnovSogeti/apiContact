@@ -12,14 +12,7 @@ module.exports = class SalonController {
     //Ajout d'un salon
     addSalon(req, callback) {
         console.log(req.body)
-        var salon = {
-            nom: req.body.nom_salon,
-            ville: req.body.ville_salon,
-            description: req.body.description_salon,
-            date_debut: req.body.debut_salon,
-            date_fin: req.body.fin_salon,
-        };
-        this.salonPersistence.save(salon, callback);
+        this.salonPersistence.save(req.body, callback);
     }
 
     //Retourne le salon correspondant à idSalon
@@ -72,7 +65,7 @@ module.exports = class SalonController {
             date_debut: req.body.date_debut,
             date_fin: req.body.date_fin,
         };
-        this.salonPersistence.updateSalon(id_salon, newdoc, callback);
+        this.salonPersistence.updateSalon(id_salon, req.body, callback);
     }
 
     /**
