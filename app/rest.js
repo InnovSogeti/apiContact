@@ -11,6 +11,19 @@ module.exports = (__) => {
         response.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
         response.send();
     });
+    const multer = require('multer');
+    var path = require('path');
+    var storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+          cb(null, 'public/upload/')
+        },
+        filename: function (req, file, cb) {
+          cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
+        }
+    })
+    
+    
+    var upload = multer({ storage: storage })
     
     // Routage
     //****************************/
@@ -130,7 +143,13 @@ module.exports = (__) => {
     //********* AUTRES ***********/
     //****************************/
 
-
+    //permet l'upload du fichier
+    router.post('/rest/fileupload', upload.single('logo'), (req, res) => {  
+        console.log(req.file);
+        res.send(req.file.path);
+       
+    
+});
 
     router.get('/rest/getSalonCourant', function (req, res) {
         salonService.get_salon_courant(function (err, saloncourant) {

@@ -44,7 +44,7 @@
     <div class="row">
 		<div class="hidden-xs col-md-2"></div>
 		<div class="col-xs-12 col-md-8">
-        <form class="form-signin">
+        <form class="form-signin" id="form-signin">
             <div class="form-group">
                 <label for="ville_salon">Ville du salon *</label>
                 <input type="text" class="form-control" name="ville_salon" placeholder="ville du salon" required>
@@ -58,8 +58,8 @@
                 <textarea class="form-control" rows="3" name="description_salon"></textarea>
             </div>
             <div class="form-group">
-            <label for="logo_salon">logo</label>
-                <input type="file" name="logo_salon" />
+                <label for="logo_salon">logo</label>
+                <input type="file" id="logo" name="logo" enctype="multipart/form-data"/>
                 <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
             </div>
             <div class="form-group">
@@ -84,50 +84,97 @@
         /**
          * permet de ne pas save les champs vide
          */
-        const isValidElement = element => {
-            return element.name && element.value;
-        };
-        const isValidValue = element => {
-            return (!['checkbox', 'radio'].includes(element.type) || element.checked);
-        };
-        const formToJSON = elements => [].reduce.call(elements, (data, element) => {
-            if (isValidValue(element)) {
-                if (isCheckbox(element)) { data[element.name] = (data[element.name] || []).concat(element.value); } else {
-                    data[element.name] = element.value;
-                }
-            }
-            return data;
-        }, {});
+        // var formData = new FormData();
+        // formData = {
+        //  'logo'    : $('input[name=logo]').val(), 
+        // }
+        
         const handleFormSubmit = event => {
+            var form = $('#form-signin')[0];
+            var data = new FormData(form);
             event.preventDefault();
-            const data = formToJSON(form.elements);
-            var json_form = JSON.stringify(data, null, " ");
-            var url= "" ;
-            $.ajax({
-                
-                type: "POST",
-                url: url+'/rest/salon/add',
-                contentType: "application/json; charset=utf-8",
+            var url ="";
+            // const data = formToJSON(form.elements);
+            // var json_form = JSON.stringify(data, null, " ");
+            // var url= 'localhost:8000/getSalonCourant'
+            // var base_url = 'http://localhost:8000/'; 
+            // var mon_logo = "images/oser.png";
+            // if(! empty(salonSelect.logo)){
+            //     var mon_logo = base_url.salonSelect.logo;
+            // }
+
+            
+             $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: url+'/rest/fileupload',
+                data: data,
+                processData: false, //prevent jQuery from automatically transforming the data into a query string
                 headers:{
                     "x-access-token": token
                 },
-                dataType : "json",
-                data : json_form,
-                success : function(result) {
-                    console.log(result);
-                    if (result == 200) {
-                        window.location.pathname="/pages/gestionsalon";
-                    }
-                    else {
-                        alert("erreur 500: veuillez recommencer")
-                    }
-                },
-                error : function(resultat, statut, erreur){
-                    console.log(resultat);
-                    console.log(token);
-                                      
+                contentType: false,
+                cache: false,
+                success: (chemin) => {
+                    console.log(chemin);
+
+                    const isValidElement = element => {
+                            return element.name && element.value;
+                        };
+                        const isValidValue = element => {
+                            return (!['checkbox', 'radio'].includes(element.type) || element.checked);
+                        };
+                        const formToJSON = elements => [].reduce.call(elements, (data, element) => {
+                            if (isValidValue(element)) {
+                                if (isCheckbox(element)) {
+                                    data[element.name] = (data[element.name] || []).concat(element.value); 
+                                } else {
+                                    data[element.name] = element.value;
+                                }
+                            }
+                            data["logo"] = chemin;
+                            return data;
+                        }, {});
+                    var data = formToJSON(form.elements);
+                    var json_form = JSON.stringify(data, null, " ");
+                    console.log(json_form);               
+                    console.log(typeof(data));
+                    
+                    $.ajax({
+                        type: "POST",
+                        url: url+'/rest/salon/add',
+                        contentType: "application/json; charset=utf-8",
+                        headers:{
+                            "x-access-token": token
+                        },
+                        dataType : "json",
+                        data : json_form,
+                        success : function(result) {
+                            console.log(result);
+                            if (result == 200) {
+                                console.log(result);
+                                
+                                window.location.pathname="/salon.php";
+                            }
+                            else {
+                                alert("erreur 500: veuillez recommencer")
+                            }
+                        },
+                        error : function(resultat, statut, erreur){
+                            console.log(resultat);
+                            console.log(token);
+                                            
+                        },
+                        // complete : function(resultat, statut){
+                        //         // console.log(resultat);
+                        // }
+                    });
                 },
+                error: (e) => {
+                    
+                }
             });
+            
         };
         const form = document.getElementsByClassName('form-signin')[0];
         form.addEventListener('submit', handleFormSubmit);
