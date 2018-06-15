@@ -12,14 +12,12 @@ module.exports = class SalonController {
     //Ajout d'un salon
     addSalon(req, callback) {
         console.log(req.body)
-        var id = req.body.nom_salon + '_' + req.body.debut_salon + '_' + req.body.fin_salon;
         var salon = {
             nom: req.body.nom_salon,
             ville: req.body.ville_salon,
             description: req.body.description_salon,
             date_debut: req.body.debut_salon,
             date_fin: req.body.fin_salon,
-            id_salon: id
         };
         this.salonPersistence.save(salon, callback);
     }
@@ -65,6 +63,17 @@ module.exports = class SalonController {
     }
 
 
+    updateSalon(id_salon, req, callback) {
+        console.log(req.body)
+        var newdoc = {
+            nom: req.body.nom,
+            ville: req.body.ville,
+            description: req.body.description,
+            date_debut: req.body.date_debut,
+            date_fin: req.body.date_fin,
+        };
+        this.salonPersistence.updateSalon(id_salon, newdoc, callback);
+    }
 
     /**
      * Retourne le salon qui se passe aujourd'hui
@@ -82,4 +91,8 @@ module.exports = class SalonController {
             res.send(day);
         });
     }
+    get_salon_courant(callback) {
+        this.salonPersistence.get_salon_courant(callback);
+    }
+    
 }

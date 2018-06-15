@@ -4,18 +4,23 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "debug": "node --inspect-brk index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "async": "^2.6.0",
-    "body-parser": "^1.18.2",
+    "body-parser": "^1.18.3",
     "ejs": "^2.5.7",
-    "express": "^4.16.2",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.2.1",
     "mongo-sanitize": "^1.0.0",
     "mongodb": "^2.2.33",
-    "monk": "^6.0.5"
+    "mongoose": "^5.1.1",
+    "monk": "^6.0.5",
+    "morgan": "^1.9.0",
+    "npm": "^6.0.0"
   },
   "devDependencies": {
     "mockery": "^2.1.0",

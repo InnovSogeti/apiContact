@@ -45,6 +45,27 @@ module.exports = class ContactController {
         this.contactPersistence.getContactsParSalon(idSalon,res);
     };
 
+    updateContact(id_contact, req, callback) {
+        console.log(req.body)
+        var newdoc = {
+            prenom: req.body.prenom,
+            email: req.body.email,
+            nom: req.body.nom,
+            telephone: req.body.telephone,
+            linkedin: req.body.linkedin,
+            viadeo: req.body.viadeo,
+            // jeuMario: req.body.jeuMario,
+            // jeuPepper: req.body.jeuPepper,
+            profil: req.body.button,
+            metier: req.body.metier,
+            accepteReContacte: req.body.ok,
+            id_salon: req.body.id_salon,
+            autre: req.body.autre,
+            datePriseContact: new Date()
+        };
+        this.contactPersistence.updateContact(id_contact, newdoc, callback);
+    }
+
     //Retourne tous les contacts enregistrés
     getContacts(callback) {
         this.contactPersistence.getAllContacts(callback)
