@@ -1,5 +1,20 @@
 <% include header/headerContact.ejs%>
 
+<div id="barre"> </div>
+    <style>
+    #barre {
+        display:block;
+        text-align:center;
+        font-size: 20px;
+        color:white;
+        background-color:rgb(38, 122, 201);
+        position: absolute;
+        left: 0%;
+        width: 100%;
+        margin-left: 0px;
+        border-top: -30px;
+    }   
+    </style>
 <div class="container">
     <div class="row">
          <div style="padding-top: 10px" id="retoursalon"></div>
@@ -89,7 +104,6 @@
                 success : function(result) {
                     console.log(result);
                     if (result == 200) {
-                        window.location.pathname="/pages/index";
                     }
                     else {
                         alert("erreur 500: veuillez recommencer")

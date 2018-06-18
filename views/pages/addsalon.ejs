@@ -37,6 +37,22 @@
     }
         
     </script>
+    <div id="barre"> </div>
+    <style>
+    #barre {
+        display:block;
+        text-align:center;
+        font-size: 20px;
+        color:white;
+        background-color:rgb(38, 122, 201);
+        margin-top: -20px;
+        position: absolute;
+        left: 0%;
+        width: 100%;
+        margin-left: 0px;
+        border-top: -30px;
+    }   
+    </style>
     <div class="container">
     <a style="color:#ff6e46; font-size: 1.3em" onclick="retourlistesalons()">
                 <button><- Liste des salons </button>
@@ -96,7 +112,7 @@
              $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
-                url: url+'/rest/fileupload',
+                url: '/rest/fileupload',
                 data: data,
                 processData: false, //prevent jQuery from automatically transforming the data into a query string
                 headers:{
@@ -130,10 +146,10 @@
                     var json_form = JSON.stringify(data, null, " ");
                     console.log(json_form);               
                     console.log(typeof(data));
-                    
+
                     $.ajax({
                         type: "POST",
-                        url: url+'/rest/salon/add',
+                        url: '/rest/salon/add',
                         contentType: "application/json; charset=utf-8",
                         headers:{
                             "x-access-token": token
@@ -143,9 +159,12 @@
                         success : function(result) {
                             console.log(result);
                             if (result == 200) {
+                                document.getElementById('barre').innerHTML = "Salon créé !";
+                                setTimeout(function() {
+                                     document.getElementById('barre').innerHTML = "";
+                                    },8000);
                                 console.log(result);
                                 
-                                window.location.pathname="/pages/gestionsalon";
                             }
                             else {
                                 alert("erreur 500: veuillez recommencer")
@@ -173,7 +192,6 @@
             data[element.name] = element.value;
             console.log(JSON.stringify(data));
             return (data);
-            // var add_salon = 1;
         };
         const isCheckbox = element => element.type === 'checkbox';
         const isMultiSelect = element => element.options && element.multiple;

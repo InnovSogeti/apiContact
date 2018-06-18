@@ -71,7 +71,6 @@
                     success : function(salon_choisi) {
                         document.getElementById("nom_salon").innerHTML += salon_choisi.nom;
                         console.log(salon_choisi.logo);
-                        if (document.getElementById("logo_salon").src){
 
                         var upload = /\/upload\/*/;
                         if (salon_choisi.logo) {
@@ -80,8 +79,7 @@
                             document.getElementById("logo_salon").src= path;
 
                         }
-                                                
-                    }
+                                                                
                     }
                 })
             }    

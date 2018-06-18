@@ -278,24 +278,9 @@ $(document).ready(function () {
                 },
                 dataType : "json",                                
                 success : function(items) {
-                var headers = {
-                    _id :"_id",
-                    prenom : "prenom",
-                    email : "Email",
-                    nom : "nom",
-                    telephone	: "tel",
-                    linkedin : "linkedin",
-                    viadeo : "viadeo",
-                    profil : "profil",
-                    metier : "metier",
-                    accepteReContacte	: "accepterecontact",
-                    id_salon : "idsalon",
-                    autre	: "autre",
-                    datePriseContact : "date"
-                };
                 var fileTitle = 'ListeContactjs';
                 
-                var csv = exportCSVFile(headers, items, fileTitle);             
+                var csv = exportCSVFile(req.body, items, fileTitle);             
                 
                 }
             })

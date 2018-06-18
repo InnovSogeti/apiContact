@@ -34,6 +34,22 @@
 
     </script>
     </br>
+    <div id="barre"> </div>
+    <style>
+    #barre {
+        display:block;
+        text-align:center;
+        font-size: 20px;
+        color:white;
+        background-color:rgb(38, 122, 201);
+        margin-top: -20px;
+        position: absolute;
+        left: 0%;
+        width: 100%;
+        margin-left: 0px;
+        border-top: -30px;
+    }   
+    </style>
     <div class="container">
     <a style="color:#ff6e46; font-size: 1.3em" onclick="retourlistesalons()">
         <button><- Liste des salons </button>
@@ -140,14 +156,18 @@
                 dataType : "json",                
                 data : json_form,
                 
-                complete : function(resultat, statut){                 
-                    window.location.pathname="/pages/gestionsalon";
+                complete : function(resultat, statut){
+                    document.getElementById('barre').innerHTML = "Salon modifié !";
+                    setTimeout(function() {
+                        document.getElementById('barre').innerHTML = "";
+                    },8000);                 
                 }
             });
         };
         const form = document.getElementsByClassName('form-signin')[0];
         form.addEventListener('submit', handleFormSubmit);
         const reducerFunction = (data, element) => {
+            message == 2;
             data[element.name] = element.value;
             return (data);
         };
