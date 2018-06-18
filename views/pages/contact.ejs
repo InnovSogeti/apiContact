@@ -1,5 +1,7 @@
 <% include header/headerContact.ejs %>
-
+<div id="all">
+    <img class="background" id="logo_salon" src="/images/oser.png" alt="groupe Capgemini" width="0%">
+</div>
 <script>
     function extractUrlParams(){   
         var t = location.search.substring(1).split('?');
@@ -71,7 +73,7 @@ $(document).ready(function () {
                     if (salons[i]._id == id_salon) {
                         selected = 'selected'; 
                     }
-                    listeSalon += "<option value ="+salons[i]._id+" "+selected+">"+salons[i].nom+"</option>";
+                    listeSalon += "<option value ="+salons[i]._id+" "+selected+">"+salons[i].nom_salon+"</option>";
                 }
                 i++;
             }      

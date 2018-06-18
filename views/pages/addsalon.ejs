@@ -88,7 +88,11 @@
             var form = $('#form-signin')[0];
             var data = new FormData(form);
             event.preventDefault();
-            var url ="";            
+            
+            // const data = formToJSON(form.elements);
+            // var json_form = JSON.stringify(data, null, " ");
+            
+            
              $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
@@ -169,6 +173,7 @@
             data[element.name] = element.value;
             console.log(JSON.stringify(data));
             return (data);
+            // var add_salon = 1;
         };
         const isCheckbox = element => element.type === 'checkbox';
         const isMultiSelect = element => element.options && element.multiple;

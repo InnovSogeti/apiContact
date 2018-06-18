@@ -49,9 +49,12 @@
         <div class="row" style="background-color: #ff6e46">
             <div class="col-xs-7">
                 <h1 class="title"> <div id = "nom_salon"></div></h1>
+                <!-- <div class="col-xs-5">
+                    <img class="logo" alt="groupe Sogeti">
+            </div> -->
             </div>
             <div class="col-xs-5">
-                    <img class="logo" src="/images/LogoTransparent_GOOD_RESOLUTION.gif" alt="groupe Sogeti">
+                    <img class="logo"  src="/images/LogoTransparent_GOOD_RESOLUTION.gif" alt="groupe Sogeti">
             </div>
 
         </div>
@@ -67,6 +70,18 @@
                     dataType : "json",                                
                     success : function(salon_choisi) {
                         document.getElementById("nom_salon").innerHTML += salon_choisi.nom;
+                        console.log(salon_choisi.logo);
+                        if (document.getElementById("logo_salon").src){
+
+                        var upload = /\/upload\/*/;
+                        if (salon_choisi.logo) {
+                            var path = salon_choisi.logo.replace("public", "");
+                            path = path.replace(/\/\//g, '/');
+                            document.getElementById("logo_salon").src= path;
+
+                        }
+                                                
+                    }
                     }
                 })
             }    
