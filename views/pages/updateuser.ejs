@@ -1,6 +1,22 @@
 <% include header/headerSalon.ejs %>
-
+<div id="barre"> </div>
+    <style>
+    #barre {
+        display:block;
+        text-align:center;
+        font-size: 20px;
+        color:white;
+        background-color:rgb(38, 122, 201);
+        margin-top: -20px;
+        position: absolute;
+        left: 0%;
+        width: 100%;
+        margin-left: 0px;
+        border-top: -30px;
+    }   
+    </style>
 <script>
+    
     function extractUrlParams(){   
         var t = location.search.substring(1).split('?');
         var f = [];
@@ -92,6 +108,8 @@
                     document.getElementById("mail").value = user_select.mail;
                     document.getElementById("login").value = user_select.login;
                     document.getElementById("pwd").value = user_select.pwd;
+                    
+
                 }
             })
         }
@@ -101,21 +119,6 @@
 
 </script>
     </br>
-    <div id="barre"> </div>
-    <style>
-    #barre {
-        display:block;
-        text-align:center;
-        font-size: 20px;
-        color:white;
-        background-color:rgb(38, 122, 201);
-        margin-top: -20px;
-        position: absolute;
-        left: 0%;
-        width: 100%;
-        margin-left: 0px;
-        border-top: -30px;
-    }   
     </style>
     <div class="container">
         <div class="row">
@@ -214,8 +217,11 @@
                 dataType : "json",                
                 data : json_form,
                 
-                
-                success : function(resultat){                 
+                complete : function(resultat, statut){
+                    document.getElementById('barre').innerHTML = "Utilisateur ajouté !";
+                    setTimeout(function() {
+                        document.getElementById('barre').innerHTML = "";
+                        },8000);                 
                     console.log(resultat);
                 },
                 error: function() {

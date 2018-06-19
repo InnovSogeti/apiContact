@@ -1,6 +1,21 @@
 
  <% include header/headerSalon.ejs%>
-
+ <div id="barre"> </div>
+ <style>
+ #barre {
+     display:block;
+     text-align:center;
+     font-size: 20px;
+     color:white;
+     background-color:rgb(38, 122, 201);
+     margin-top: -20px;
+     position: absolute;
+     left: 0%;
+     width: 100%;
+     margin-left: 0px;
+     border-top: -30px;
+ }   
+ </style>
  
 </br><script>
      
@@ -77,13 +92,13 @@
                         document.getElementById("explication").innerHTML += choix;
                     }
                     while (listeSalons[i]) {
-                        if (listeSalons[i].nom != undefined) {
+                        if (listeSalons[i].nom_salon != undefined) {
                             var html = "<div class=\"panel panel-default\"><div class=\"panel-heading\"><h4 class=\"panel-title\"><a data-toggle=\"collapse\" data-parent=\"#accordion\"href=\"#collapse";
                             var liste;
 
                             html += count;
                             html += "\">";
-                            html += listeSalons[i].nom;
+                            html += listeSalons[i].nom_salon;
                             html += "</a></h4></div><div id=\"collapse"
                             html += count;
                             if (count == 1)
@@ -91,13 +106,13 @@
                             else
                                 html += "\" class=\"panel-collapse collapse\"><div class=\"panel-body\">";
                             html += "Ville : ";
-                            html += listeSalons[i].ville;
+                            html += listeSalons[i].ville_salon;
                             html += "</br>Description : ";
-                            html += listeSalons[i].description;
+                            html += listeSalons[i].description_salon;
                             html += "</br>Date de début : ";
-                            html += listeSalons[i].date_debut;
+                            html += listeSalons[i].debut_salon;
                             html += "</br>Date de fin : ";
-                            html += listeSalons[i].date_fin;
+                            html += listeSalons[i].fin_salon;
 
                             html += "<div class=\"form-group\">"
                             html += "<input id=\"id_salon\" type=\"text\" class=\"form-control\" name=\"id_salon\" value=\"";

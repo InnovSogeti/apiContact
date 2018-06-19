@@ -97,18 +97,18 @@
             var url= "" ;
             $.ajax({
                 type: "POST",
-                url: url+'/rest/contact/add',
+                url:'/rest/contact/add',
                 dataType : "json",
                 contentType: "application/json; charset=utf-8",
                 data : json_form,
-                success : function(result) {
-                    console.log(result);
-                    if (result == 200) {
-                    }
-                    else {
-                        alert("erreur 500: veuillez recommencer")
-                    }
-                },
+                success : function(result) {
+
+                    document.getElementById('barre').innerHTML = "Contact ajouté !";
+                        setTimeout(function() {
+                            document.getElementById('barre').innerHTML = "";
+                        },8000);
+                        console.log(result);   
+                }    
             });
         };
         const form = document.getElementsByClassName('form-signin')[0];
