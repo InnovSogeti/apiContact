@@ -144,12 +144,14 @@ module.exports = (__) => {
     //****************************/
 
     //permet l'upload du fichier
-    router.post('/rest/fileupload', upload.single('logo'), (req, res) => {  
+    router.post('/rest/fileupload', upload.single('logo'), (req, res) => {  
         console.log(req.file);
-        res.send(req.file.path);
-       
-    
-});
+        if (req.file) {
+            res.send(req.file.path);
+        } else {
+            res.send("");
+        }
+    });
 
     router.get('/rest/getSalonCourant', function (req, res) {
         salonService.get_salon_courant(function (err, saloncourant) {

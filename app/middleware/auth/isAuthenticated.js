@@ -26,7 +26,6 @@ module.exports = (__) => {
                         });
                     } 
                     else {   
-                        console.log("cc");
                          
                         reject();
                     }       

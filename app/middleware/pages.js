@@ -5,7 +5,6 @@ module.exports = (__) => {
 
     router.use(function(req, res, next) {
    
-
         const excluded = [
             '/pages/login',
             '/rest/authenticate',
@@ -36,7 +35,7 @@ module.exports = (__) => {
                 next();
             })
             .catch(() => {
-                res.redirect('/pages/login')
+                res.redirect('/pages/index')
             });
     });            
     

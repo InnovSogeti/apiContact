@@ -96,7 +96,7 @@
             success : function(salon_courant) {
                 
                 document.getElementById("ville").value = salon_courant.ville;
-                document.getElementById("nom_salon").value = salon_courant.nom;
+                document.getElementById("nom").value = salon_courant.nom;
                 document.getElementById("description").value = salon_courant.description;
                 document.getElementById("date_debut").value = salon_courant.date_debut;
                 document.getElementById("date_fin").value = salon_courant.date_fin;
@@ -144,7 +144,6 @@
                 complete : function(resultat, statut){                 
                     window.location.pathname="/pages/gestionsalon";
                 }
-                
             });
         };
         const form = document.getElementsByClassName('form-signin')[0];
