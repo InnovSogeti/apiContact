@@ -48,7 +48,7 @@
             </div>
             <div class="form-group">
                 <label for="nom">Nom du salon *</label>
-                <input id="nom_salon" type="text" class="form-control" name="nom" placeholder="nom du salon" required>
+                <input id="nom" type="text" class="form-control" name="nom" placeholder="nom du salon" required>
             </div>
             <div class="form-group">
                 <label for="description">Description du salon:</label>
@@ -79,21 +79,20 @@
     </div>
     <script> 
     function retourlistesalons() {
-        window.location.href="/pages/gestionsalon?token="+token
+        window.location.href="/pages/gestionsalon";
     }
-    
-    var url= "" ;
 
     $(document).ready(function () {
         $.ajax({
             type: "GET",
-            url: url+'/rest/salon/'+ idSalon,
+            url: '/rest/salon/'+ idSalon,
             contentType :"application/json; charset=utf-8",
             headers:{
                 "x-access-token": token
             },
             dataType : "json",                                
             success : function(salon_courant) {
+                console.log(salon_courant);
                 
                 document.getElementById("ville").value = salon_courant.ville;
                 document.getElementById("nom").value = salon_courant.nom;
