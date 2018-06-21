@@ -45,6 +45,5 @@ module.exports = class ContactPersistence {
         db.collection(COLLECTION).find().toArray(function(err,doc){
             callback(err,doc)
         })
-    }
-
+    }        
 }

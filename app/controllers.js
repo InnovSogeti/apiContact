@@ -21,5 +21,8 @@ module.exports = (__) => {
     router.get('/pages/contact', function(req, res) {
         res.render('pages/contact', {});
     });
+    router.get('/pages/sendmail', function(req, res){
+        res.render('pages/sendmail', {});
+    });
 }
 

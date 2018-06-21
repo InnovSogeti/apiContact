@@ -20,7 +20,8 @@ module.exports = (__) => {
             '/pages/index',
             '/pages/updateuser',
             '/pages/updateSalon',
-            '/pages/contact'
+            '/pages/contact',
+            'pages/sendmail'
         ];
             
         isAuthenticated({

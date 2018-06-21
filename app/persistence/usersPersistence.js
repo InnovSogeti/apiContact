@@ -8,6 +8,8 @@ var app         = express();
 var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
 var mongoose    = require('mongoose');
+const nodemailer = require('nodemailer');
+var cron = require('node-cron');
 var config = require('../config'); // get our config file
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 app.set('superSecret', config.secret); // secret variable

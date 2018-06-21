@@ -153,6 +153,11 @@ module.exports = (__) => {
         }
     });
 
+//permet l'envoi d'un mail
+// router.post('/rest/sendmail', function (req, res) {  
+//     res.send(req);
+// });
+
     router.get('/rest/getSalonCourant', function (req, res) {
         salonService.get_salon_courant(function (err, saloncourant) {
             if(err) {
