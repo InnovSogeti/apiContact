@@ -5,14 +5,9 @@ module.exports = (__) => {
 
     router.use(function(req, res, next) {
         var salon = /\/salon\/*/;
-    
+       
         const included = [
-            // '/pages/gestionsalon',
-            // '/pages/addsalon',
-            // '/pages/index',
-            // '/pages/updateuser',
-            // '/pages/updateSalon',
-            // '/pages/contact'
+
         ];
         const excluded = [
             '/pages/login',

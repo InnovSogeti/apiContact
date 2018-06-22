@@ -144,12 +144,14 @@ module.exports = (__) => {
     //****************************/
 
     //permet l'upload du fichier
-    router.post('/rest/fileupload', upload.single('logo'), (req, res) => {  
+    router.post('/rest/fileupload', upload.single('logo'), (req, res) => {  
         console.log(req.file);
-        res.send(req.file.path);
-       
-    
-});
+        if (req.file) {
+            res.send(req.file.path);
+        } else {
+            res.send("");
+        }
+    });
 
     router.get('/rest/getSalonCourant', function (req, res) {
         salonService.get_salon_courant(function (err, saloncourant) {
@@ -188,8 +190,12 @@ module.exports = (__) => {
     router.post('/rest/salon/update/:id_salon', function (req, res) {
         salonService.updateSalon(req.params.id_salon, req, function(err, retour){
         if (res) {
+            console.log("cccccccc");
+            
             res.send(err)
         } else {
+            console.log("aaaaaaaaaaaaaaaaaaa");
+            
             res.send(retour);
         }
         });
@@ -199,22 +205,22 @@ module.exports = (__) => {
     //****************************/
 
     //Ressource qui enregistre un nouveau contact
-    router.post('/rest/users/add', function (req, res) {
-        usersService.addUsers(req, function(err,retour){
-                console.log(retour)
-                console.log(err)
-                res.send(retour);
-        });
-    });
-    //     usersService.addUsers(req, function(retour,idCree){
-    //         if (retour) {
+    // router.post('/rest/users/add', function (req, res) {
+    //     usersService.addUsers(req, function(err,retour){
+    //             console.log(retour)
+    //             console.log(err)
     //             res.send(retour);
-    //         }
-    //         console.log(retour)
-    //         // console.log(idCree)
-    //         res.send(retour);
     //     });
     // });
+    router.post('/rest/users/add', function (req, res) {
+        usersService.addUsers(req, function(err,retour){
+                if(err != 200){
+                    res.status(409).send(err);
+                }else{
+                    res.send(retour);
+                }
+        });
+    }); 
 
     router.post('/rest/user/update/:id_users', function (req, res) {
         usersService.updateUsers(req.params.id_users, req, function(err, retour){

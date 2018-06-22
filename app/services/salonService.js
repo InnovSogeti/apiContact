@@ -58,13 +58,6 @@ module.exports = class SalonController {
 
     updateSalon(id_salon, req, callback) {
         console.log(req.body)
-        var newdoc = {
-            nom: req.body.nom,
-            ville: req.body.ville,
-            description: req.body.description,
-            date_debut: req.body.date_debut,
-            date_fin: req.body.date_fin,
-        };
         this.salonPersistence.updateSalon(id_salon, req.body, callback);
     }
 

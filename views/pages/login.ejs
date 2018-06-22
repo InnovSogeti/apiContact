@@ -93,16 +93,15 @@
         event.preventDefault();
         const data = formToJSON(form.elements);
         var json_form = JSON.stringify(data, null, " ");
-        var url= "" ;
 
         $.ajax({
             type: "POST",
-            url: url+'/rest/authenticate',
+            url: '/rest/authenticate',
             dataType : "json",
             contentType: "application/json; charset=utf-8",
             data : json_form,
             success : function(result) { 
-                if (result.token) {
+                if (result.token) {                    
                     document.cookie = 'token='+result.token+'; expires=Thu, 2 Aug 2022 20:47:11 UTC; path=/'
                     window.location.href="/pages/gestionsalon"; 
                 }
@@ -110,9 +109,7 @@
                     alert("Mauvais login ou mot de passe");
                 }
             },
-            error : function(resultat, statut, erreur){  
-                console.log(resultat);
-                              
+            error : function(resultat, statut, erreur){                                
                 alert("Erreur");          
             }
         });
