@@ -69,7 +69,7 @@
                     contentType :"application/json; charset=utf-8",
                     dataType : "json",                                
                     success : function(salon_choisi) {
-                        document.getElementById("nom_salon").innerHTML += salon_choisi.nom;
+                        document.getElementById("nom_salon").innerHTML += salon_choisi.nom_salon;
                         console.log(salon_choisi.logo);
 
                         var upload = /\/upload\/*/;

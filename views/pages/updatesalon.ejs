@@ -60,7 +60,7 @@
         <form class="form-signin">
             <div class="form-group">
                 <label for="ville">Ville du salon *</label>
-                <input id = "ville" type="text" class="form-control" name="ville" placeholder="ville du salon" value = "" required>
+                <input id = "ville" type="text" class="form-control" name="ville_salon" placeholder="ville du salon" value = "" required>
             </div>
             <div class="form-group">
                 <label for="nom">Nom du salon *</label>
@@ -68,20 +68,24 @@
             </div>
             <div class="form-group">
                 <label for="description">Description du salon:</label>
-                <textarea id = "description" class="form-control" rows="3" name="description"></textarea>
+                <textarea id = "description" class="form-control" rows="3" name="description_salon"></textarea>
             </div>
             <div class="form-group">
             <label for="logo">logo</label>
-                <input type="file" name="logo_salon" />
+                <input type="file" name="logo" />
                 <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
             </div>
             <div class="form-group">
                 <label for="date_debut">Du : *</label>
-                <input id="date_debut" type="date" class="form-control" name="date_debut" required>
+                <input id="date_debut" type="date" class="form-control" name="debut_salon" required>
             </div>
             <div class="form-group">
                 <label for="date_fin">Au : *</label>
-                <input id = "date_fin" type="date" class="form-control" name="date_fin" required>
+                <input id = "date_fin" type="date" class="form-control" name="fin_salon" required>
+            </div>
+            <div class="form-group">
+                <label for="template_mail">Template de mail à envoyer</label>
+                <textarea class="form-control" rows="3" name="template_mail"></textarea>
             </div>
             <button type="submit" class="btn btn-success btn-lg btn-block">Valider</button>
             </br>

@@ -121,7 +121,6 @@
                             html += "</div>";
                             html += "<button type=\"submit\" name=\"sub_select\" class=\"btn btn-success btn-lg btn-block\" onclick=\"choisirSalon('"+listeSalons[i]._id+"')\">Choisir</button>"
                             html += "<button type=\"submit\" name=\"sub_contact\" class=\"btn btn-success btn-lg btn-block\" onclick=\"afficherContactsSalon('"+listeSalons[i]._id+"')\">Afficher la liste des visiteurs</button>"
-                            html += "<button type=\"submit\" name=\"sub_mail\" class=\"btn btn-success btn-lg btn-block\" onclick=\"envoyerMessage('"+listeSalons[i]._id+"')\">Envoyer un mail</button>"
                             html += "<button type=\"submit\" name=\"sub_update\" class=\"btn btn-success btn-lg btn-block\" onclick=\"updateSalon('"+listeSalons[i]._id+"')\">Modifier</button>"
                             html += "<button type=\"submit\" id=\"del_"+listeSalons[i]._id+"\" class=\"btn btn-success btn-lg btn-block\" onclick=\"deleteSalon('"+listeSalons[i]._id+"')\">Supprimer</button>"
 
@@ -136,9 +135,7 @@
                 },                
             });
     })
-    function envoyerMessage(idSalon){
-            window.location.href= window.location.origin+"/pages/sendmail?id_salon="+idSalon;
-        }
+        
         function choisirSalon(idSalon){
             window.location.href= window.location.origin+"/pages/index?id_salon="+idSalon;
         }
