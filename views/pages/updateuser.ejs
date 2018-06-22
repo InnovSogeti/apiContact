@@ -39,8 +39,8 @@
 
     $(document).ready(function () {
             var url= '/rest/users';
-            console.log(url);
-            console.log(token);
+            // console.log(url);
+            // console.log(token);
             
             $.ajax({
                 type: "GET",
@@ -83,7 +83,7 @@
                 },
                 dataType : "json",                                
                 success : function(user_select) {
-                    console.log(user_select);
+                    // console.log(user_select);
                     
                     document.getElementById("nom").value = user_select.nom;
                     document.getElementById("prenom").value = user_select.prenom;
@@ -179,7 +179,7 @@
             event.preventDefault();
             var data = formToJSON(form.elements);
             var json_form = JSON.stringify(data, null, " ");
-            console.log(json_form);
+            // console.log(json_form);
             var choixurl = id_user;
             
             if (choixurl == "adduser") {
@@ -198,11 +198,14 @@
                 dataType : "json",                
                 data : json_form,
                 
-                complete : function(resultat, statut){                 
+                
+                success : function(resultat){                 
                     console.log(resultat);
-                    
                     window.location.pathname="/pages/gestionsalon";
-                }
+                },
+                error: function() {
+                  alert('Ce login existe déjà !'); 
+                }  
                 
             });
         };
@@ -210,7 +213,7 @@
         form.addEventListener('submit', handleFormSubmit);
         const reducerFunction = (data, element) => {
             data[element.name] = element.value;
-            console.log(JSON.stringify(data));
+            // console.log(JSON.stringify(data));
             return (data);
         };
         const isCheckbox = element => element.type === 'checkbox';

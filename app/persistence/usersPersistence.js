@@ -23,7 +23,7 @@ module.exports = class UsersPersisence {
         var query = {
             login: sanitize(req.login),
         }
-
+        
         db.collection(COLLECTION).findOne(query, function(err, user) {
             var res;
             if (err) throw err;
@@ -69,8 +69,8 @@ module.exports = class UsersPersisence {
             login: sanitize(users.login)
         }
         db.collection(COLLECTION).findOne(query, function(err,infoUser){
-            // console.log(infoUser);
-            callback(null ,infoUser == null);           
+            console.log(infoUser == null);
+            callback(infoUser == null, null);           
         })
     }
 
@@ -130,4 +130,4 @@ module.exports = class UsersPersisence {
             callback("200", docs.ops[0]._id)
         });
       }
-  }
+    }

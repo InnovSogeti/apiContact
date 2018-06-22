@@ -14,6 +14,21 @@ module.exports = class UsersController {
         this.usersPersistence.save(req.body, callback);   
     }
 
+
+    addUsers(req, callback) {
+        this.usersPersistence.checkLogin(req.body,(loginDispo, err) => {
+        if(loginDispo){
+            console.log("000000000000000");
+            this.usersPersistence.save(req.body, callback);
+        }
+        else{
+            callback("login deja existant",null);
+        }
+        })
+    }
+
+
+
     updateUsers(id_user, req, callback) {
         console.log(req.body)
         this.usersPersistence.update(id_user, req.body, callback);
