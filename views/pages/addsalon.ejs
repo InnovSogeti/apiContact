@@ -60,7 +60,7 @@
     <div class="row">
 		<div class="hidden-xs col-md-2"></div>
 		<div class="col-xs-12 col-md-8">
-        <form class="form-signin" id="form-signin">
+        <form class="form-signin" id="form-signin"  name="formulaireDynamique">
             <div class="form-group">
                 <label for="ville">Ville du salon *</label>
                 <input type="text" class="form-control" name="ville" placeholder="ville du salon" required>
@@ -86,6 +86,8 @@
                 <label for="fin_salon">Au : *</label>
                 <input type="date" class="form-control" name="date_fin" required>
             </div>
+            <label for="QRCode"> Ajouter un élément du QRCode : </label><br>
+                <input id= "buttonajout" name = "buttonajout" type="button" onclick="ajout(this);"  value="Ajouter"/>
             <div class="form-group">
                 <label for="template_mail">Template de mail à envoyer</label>
                 <textarea class="form-control" rows="3" name="template_mail"></textarea>
@@ -104,6 +106,42 @@
         /**
          * permet de ne pas save les champs vide
          */
+         function ajout(element){
+
+            var formulaire = window.document.formulaireDynamique;
+            // On clone le bouton d'ajout
+            // var ajout = element.cloneNode(true);
+            // Crée un nouvel élément de type "input"
+            var champ = document.createElement("input");
+            champ.className = "form-control";
+            // Les valeurs encodée dans le formulaire seront stockées dans un tableau
+            champ.name = "QRCode";
+            champ.type = "text";
+            var sup = document.createElement("input");
+            sup.value = "Supprimer";
+            sup.type = "button";
+            // Ajout de l'événement onclick
+            sup.onclick = function onclick(event)
+                {suppression(this);};
+                
+            // On crée un nouvel élément de type "p" et on insère le champ l'intérieur.
+            var bloc = document.createElement("p");
+            bloc.appendChild(champ);
+            //   formulaire.insertBefore(ajout, element);
+            formulaire.insertBefore(sup, element);
+            formulaire.insertBefore(bloc, element);
+        }
+        function suppression(element){
+            
+                var formulaire = window.document.formulaireDynamique;
+                        
+                // Supprime le bouton d'ajout
+                // formulaire.removeChild(element.previousSibling);
+                // Supprime le champ
+                formulaire.removeChild(element.nextSibling);
+                // Supprime le bouton de suppression
+                formulaire.removeChild(element);
+            }
         const handleFormSubmit = event => {
             var form = $('#form-signin')[0];
             var data = new FormData(form);
@@ -134,16 +172,23 @@
                             return (!['checkbox', 'radio'].includes(element.type) || element.checked);
                         };
                         const formToJSON = elements => [].reduce.call(elements, (data, element) => {
-                            if (isValidValue(element)) {
-                                if (isCheckbox(element)) {
+
+                            if (isValidValue(element) && element.name != "buttonajout") {
+                                if (isCheckbox(element) ) {
                                     data[element.name] = (data[element.name] || []).concat(element.value); 
-                                } else {
-                                    data[element.name] = element.value;
+                                } 
+                                else { 
+                                    if (element.name == "QRCode"){
+                                        data["QRCode-"+element.value] = element.value;
+                                    }                      
+                                    else {
+                                        data[element.name] = element.value;
+                                    }
+                            
                                 }
-                            }
-                            if (chemin) {
-                                data["logo"] = chemin;
-                            }
+                            }            
+
+
                             return data;
                         }, {});
                     var data = formToJSON(form.elements);

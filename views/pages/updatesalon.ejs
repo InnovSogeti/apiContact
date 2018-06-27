@@ -57,10 +57,10 @@
     <div class="row">
 		<div class="hidden-xs col-md-2"></div>
 		<div class="col-xs-12 col-md-8">
-        <form class="form-signin">
+        <form class="form-signin" name="formulaireDynamique">
             <div class="form-group">
                 <label for="ville">Ville du salon *</label>
-                <input id = "ville" type="text" class="form-control" name="ville_salon" placeholder="ville du salon" value = "" required>
+                <input id = "ville" type="text" class="form-control" name="ville" placeholder="ville du salon" value = "" required>
             </div>
             <div class="form-group">
                 <label for="nom">Nom du salon *</label>
@@ -68,7 +68,7 @@
             </div>
             <div class="form-group">
                 <label for="description">Description du salon:</label>
-                <textarea id = "description" class="form-control" rows="3" name="description_salon"></textarea>
+                <textarea id = "description" class="form-control" rows="3" name="description"></textarea>
             </div>
             <div class="form-group">
             <label for="logo">logo</label>
@@ -77,12 +77,14 @@
             </div>
             <div class="form-group">
                 <label for="date_debut">Du : *</label>
-                <input id="date_debut" type="date" class="form-control" name="debut_salon" required>
+                <input id="date_debut" type="date" class="form-control" name="date_debut" required>
             </div>
             <div class="form-group">
                 <label for="date_fin">Au : *</label>
-                <input id = "date_fin" type="date" class="form-control" name="fin_salon" required>
+                <input id = "date_fin" type="date" class="form-control" name="date_fin" required>
             </div>
+                <label for="QRCode"> Ajouter un élément du QRCode : </label><br>
+                <input id= "buttonajout" name = "buttonajout" type="button" onclick="ajout(this);"  value="Ajouter"/>
             <div class="form-group">
                 <label for="template_mail">Template de mail à envoyer</label>
                 <textarea class="form-control" rows="3" name="template_mail"></textarea>
@@ -97,7 +99,45 @@
 		<div class="hidden-xs col-md-2"></div>
     </div>
     </div>
-    <script> 
+    <script>
+   function ajout(element){
+    //   document.getElementById("buttonajout").style.visibility = "hidden";
+
+      var formulaire = window.document.formulaireDynamique;
+      // On clone le bouton d'ajout
+      // var ajout = element.cloneNode(true);
+      // Crée un nouvel élément de type "input"
+      var champ = document.createElement("input");
+      champ.className = "form-control";
+      // Les valeurs encodée dans le formulaire seront stockées dans un tableau
+      champ.name = "QRCode";
+      champ.type = "text";
+      var sup = document.createElement("input");
+      sup.value = "Supprimer";
+      sup.type = "button";
+      // Ajout de l'événement onclick
+      sup.onclick = function onclick(event)
+         {suppression(this);};
+        
+      // On crée un nouvel élément de type "p" et on insère le champ l'intérieur.
+      var bloc = document.createElement("p");
+      bloc.appendChild(champ);
+    //   formulaire.insertBefore(ajout, element);
+      formulaire.insertBefore(sup, element);
+      formulaire.insertBefore(bloc, element);
+   }
+   function suppression(element){
+       
+        var formulaire = window.document.formulaireDynamique;
+                
+        // Supprime le bouton d'ajout
+        // formulaire.removeChild(element.previousSibling);
+        // Supprime le champ
+        formulaire.removeChild(element.nextSibling);
+        // Supprime le bouton de suppression
+        formulaire.removeChild(element);
+    }
+
     function retourlistesalons() {
         window.location.href="/pages/gestionsalon";
     }
@@ -111,9 +151,7 @@
                 "x-access-token": token
             },
             dataType : "json",                                
-            success : function(salon_courant) {
-                console.log(salon_courant);
-                
+            success : function(salon_courant) {                
                 document.getElementById("ville").value = salon_courant.ville;
                 document.getElementById("nom").value = salon_courant.nom;
                 document.getElementById("description").value = salon_courant.description;
@@ -123,6 +161,7 @@
         })
     });
 
+        
         /**
          * permet de ne pas save les champs vide
          */
@@ -133,13 +172,23 @@
             return (!['checkbox', 'radio'].includes(element.type) || element.checked);
         };
         const formToJSON = elements => [].reduce.call(elements, (data, element) => {
-            if (isValidValue(element)) {
-                if (isCheckbox(element)) {
+
+            if (isValidValue(element) && element.name != "buttonajout") {
+                if (isCheckbox(element) ) {
                     data[element.name] = (data[element.name] || []).concat(element.value); 
-                } else {
-                    data[element.name] = element.value;
+                } 
+                else { 
+                    if (element.name == "QRCode"){
+                        data["QRCode-"+element.value] = element.value;
+                    }                      
+                    else {
+                        data[element.name] = element.value;
+                    }
+               
                 }
-            }
+            }            
+        
+        
             return data;
         }, {});
         const handleFormSubmit = event => {

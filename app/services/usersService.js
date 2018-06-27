@@ -10,21 +10,21 @@ module.exports = class UsersController {
     //****************************/
 
     //Ajout d'un user
-    addUsers(req, callback) {
-        this.usersPersistence.save(req.body, callback);   
-    }
+    // addUsers(req, callback) {
+    //     this.usersPersistence.save(req.body, callback);   
+    // }
 
 
     addUsers(req, callback) {
         this.usersPersistence.checkLogin(req.body,(loginDispo, err) => {
-        if(loginDispo){
-            console.log("000000000000000");
-            this.usersPersistence.save(req.body, callback);
-        }
-        else{
-            callback("login deja existant",null);
-        }
-        })
+            if(loginDispo){
+                console.log("000000000000000");
+                this.usersPersistence.save(req.body, callback);
+            }
+            else{
+                callback("login deja existant",null);
+            }
+            })
     }
 
 

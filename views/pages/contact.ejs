@@ -59,9 +59,7 @@ $(document).ready(function () {
             "x-access-token": token
         },
         dataType : "json",                                
-        success : function(salons) {
-            console.log(salons);
-              
+        success : function(salons) {             
             var listeSalon = "<h1>";
             var selected= '';
             var i = 0;
@@ -73,7 +71,7 @@ $(document).ready(function () {
                     if (salons[i]._id == id_salon) {
                         selected = 'selected'; 
                     }
-                    listeSalon += "<option value ="+salons[i]._id+" "+selected+">"+salons[i].nom_salon+"</option>";
+                    listeSalon += "<option value ="+salons[i]._id+" "+selected+">"+salons[i].nom+"</option>";
                 }
                 i++;
             }      
@@ -90,7 +88,7 @@ $(document).ready(function () {
 
 
 </script>
-    <<div class="container">
+    <div class="container">
         <h1>
         <div id="listeSalon"> </div>
         </h1>
@@ -103,7 +101,7 @@ $(document).ready(function () {
           </form>
 
 
-    </div>>
+    </div>
     <script>
         $(document).ready(function () {
             if (id_salon == "all") {
@@ -210,17 +208,13 @@ $(document).ready(function () {
                 var str = '';
 
                 for (var i = 0; i < array.length; i++) {
-                    // console.log(i);
-                    
                     var line = '';
                     for (var index in array[i]) {
                         if (line != '') line += ';'  
                         if (typeof array[i][index] == "string") {
                             array[i][index]= (array[i][index]).replace(";", ",");
                         }
-                       line += array[i][index];
-                        // console.log(array[i]);
-                        
+                       line += array[i][index];                        
                     }
                     
                     
@@ -294,10 +288,6 @@ $(document).ready(function () {
         const isCheckbox = element => element.type === 'checkbox';
         const isMultiSelect = element => element.options && element.multiple;
     </script>
-
-
-
-
     <style>
         table {
             border-collapse: collapse;

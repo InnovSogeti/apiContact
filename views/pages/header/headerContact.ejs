@@ -49,9 +49,6 @@
         <div class="row" style="background-color: #ff6e46">
             <div class="col-xs-7">
                 <h1 class="title"> <div id = "nom_salon"></div></h1>
-                <!-- <div class="col-xs-5">
-                    <img class="logo" alt="groupe Sogeti">
-            </div> -->
             </div>
             <div class="col-xs-5">
                     <img class="logo"  src="/images/LogoTransparent_GOOD_RESOLUTION.gif" alt="groupe Sogeti">
@@ -68,10 +65,8 @@
                     url: url,
                     contentType :"application/json; charset=utf-8",
                     dataType : "json",                                
-                    success : function(salon_choisi) {
-                        document.getElementById("nom_salon").innerHTML += salon_choisi.nom_salon;
-                        console.log(salon_choisi.logo);
-
+                    success : function(salon_choisi) {                       
+                        document.getElementById("nom_salon").innerHTML += salon_choisi.nom;
                         var upload = /\/upload\/*/;
                         if (salon_choisi.logo) {
                             var path = salon_choisi.logo.replace("public", "");
@@ -91,7 +86,6 @@
                     contentType :"application/json; charset=utf-8",
                     dataType : "json",                                
                     success : function(salon_courant) {
-                        console.log(salon_courant.length);
                         if (salon_courant.length > 1) {
                             var listeSalon = "<h1>";
                             var selected= '';

@@ -71,7 +71,6 @@
             var lebutton = '<a style="color:#ff6e46; font-size: 1.3em" href="/pages/gestionsalon"><- Liste des salons </a>'
             document.getElementById("retoursalon").innerHTML= lebutton;
         } 
-        document.getElementById("idsalon").value= id_salon;
         /**
          * permet de ne pas save les champs vide
          */
@@ -121,5 +120,5 @@
         const isCheckbox = element => element.type === 'checkbox';
         const isMultiSelect = element => element.options && element.multiple;
     </script>
-    <!-- <?php include('common/footer.php'); ?> -->
+    <% include footer/footer.ejs%>
 </html>
