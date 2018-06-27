@@ -24,6 +24,7 @@
     "node-cron": "^1.2.1",
     "nodemailer": "^4.6.7",
     "npm": "^6.0.0",
+    "require": "^2.4.20",
     "trim": "0.0.1"
   },
   "devDependencies": {

@@ -2,7 +2,7 @@
 
 
     </br>
-    <script>
+    <script>      
         function extractUrlParams(){   
         var t = location.search.substring(1).split('?');
         var f = [];
@@ -87,6 +87,10 @@
                 <input type="date" class="form-control" name="date_fin" required>
             </div>
             <div class="form-group">
+                <label for="date_envoi">Date d'envoi du mail</label>
+                <input type="date" class="form-control" name="date_envoi" required>
+            </div>
+            <div class="form-group">
                 <label for="template_mail">Template de mail à envoyer</label>
                 <textarea class="form-control" rows="3" name="template_mail"></textarea>
             </div>
@@ -168,11 +172,9 @@
                                      document.getElementById('barre').innerHTML = "";
                                     },8000);
                                 console.log(result);
-                                
-                            }
-                            else {
-                                alert("erreur 500: veuillez recommencer")
-                            }
+                                    }else {
+                                        alert("erreur 500: veuillez recommencer")
+                                    }
                         },
                         error : function(resultat, statut, erreur){
                             console.log(resultat);

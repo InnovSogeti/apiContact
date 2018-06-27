@@ -2,6 +2,7 @@ const DB = require('../../db')
 const COLLECTION = 'salon'
 var sanitize = require('mongo-sanitize');
 var ObjectID = require('mongodb').ObjectID;
+const nodemailer = require('nodemailer');  
 
 module.exports = class SalonPersistence {
 

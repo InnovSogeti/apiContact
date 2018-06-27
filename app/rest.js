@@ -1,5 +1,5 @@
 module.exports = (__) => {
-    const {app, router, usersService, salonService, contactService} = __;
+    const {app, router, nodemailer, usersService, salonService, contactService} = __;
     
     router.use(function(request, response, next) {
         response.header("Access-Control-Allow-Origin", "*");
@@ -21,6 +21,7 @@ module.exports = (__) => {
           cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
         }
     })
+
     
     
     var upload = multer({ storage: storage })
@@ -154,8 +155,31 @@ module.exports = (__) => {
     });
 
 //permet l'envoi d'un mail
-// router.post('/rest/sendmail', function (req, res) {  
-//     res.send(req);
+ router.post('/rest/envoiemail', function (req, res) { 
+      salonService.envoiemail(req, function (err) {
+      console.log("envoi email=" +envoiemail); 
+      if(err) {
+        res.send(err);
+    }else{
+        res.send(saloncourant);
+    }
+    // salonService.getSalon(function (err, listeSalons) {
+    //     if(err) {
+    //         res.send(err);
+    //     }else{
+    //         res.send(listeSalons);
+    //     }
+    // });
+    // contactService.getContactsParSalon(function (err, contactsSalon) {
+    //     if(err) {
+    //         res.send(err);
+    //     }else{
+    //         res.send(contactsSalon);
+    //     }
+    // });
+      })
+});
+
 // });
 
     router.get('/rest/getSalonCourant', function (req, res) {

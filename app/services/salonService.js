@@ -1,8 +1,33 @@
 module.exports = class SalonController {
+    
+     envoiemail(req, err) {
+      this.salonPersistence.getAllSalons(req.body, (listeSalon, err)  => {
+        for (salon of listeSalon){
+          console.log("a");
+          if(salon.date_envoi !="" && salon.template_mail !=""){
+            if (salon.date_envoi < new Date()){
+                var listeContacts = this.contactPersistence.getContactsParSalon(req.body, (listeContacts, err));
+                var result="";
+                    for (var i in listeContacts) {
+                        result = listeContacts[i];
+//appel fonction envoyer mail
+                    }
+                }
+        //Verifier si salon a une date et un template de mail
+        // et
+        // Verfier que la date de declenchement est bien inferieur à maintenant
 
+            }
+        //si OK :
+        
+        }
+    })
+}
+        
     //Init couche persistence
-    setPersistence(salonPersistence) {
+    setPersistence(salonPersistence, contactPersistence) {
         this.salonPersistence = salonPersistence;
+        this.contactPersistence = contactPersistence;
     }
 
     //****************************/

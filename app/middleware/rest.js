@@ -15,7 +15,8 @@ module.exports = (__) => {
             '/rest/users/add',
             '/rest/contact/add',
             '/rest/getSalonCourant',
-            '/pages/index'
+            '/pages/index',
+            '/rest/envoiemail'
         ];
                 
         if ((excluded.indexOf(req.url) > -1)|| req.url.match(salon)) return next();
