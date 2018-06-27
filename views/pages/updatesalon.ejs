@@ -101,20 +101,23 @@
     function retourlistesalons() {
         window.location.href="/pages/gestionsalon";
     }
-
-    // $.ajax({
-    //     type : "POST",
-    //     url: '/rest/envoiemail',
-    //     contentType :"application/json; charset=utf-8",
-    //         headers:{
-    //             "x-access-token": token
-    //         },
-    //         dataType : "json",                                
-    //         success : function(template_mail){
-
-
-    //         }
-    // });
+//requête ajax pour envoyer les mails
+     $.ajax({
+         type : "POST",
+         url: '/rest/envoiemail',
+         contentType :"application/json; charset=utf-8",
+            headers:{
+                 "x-access-token": token,
+            },
+            dataType : "json",                                
+            complete: function(req, err){
+                envoiemail(req, err);
+                document.getElementById('barre').innerHTML = "e-mail envoyé !";
+                setTimeout(function() {
+                    document.getElementById('barre').innerHTML = "";
+                },10000);                 
+            }
+        });
 
     $(document).ready(function () {
         $.ajax({
