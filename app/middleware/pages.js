@@ -11,7 +11,9 @@ module.exports = (__) => {
             '/rest/users/add',
             '/rest/contact/add',
             '/rest/getSalonCourant',
-            '/pages/index'
+            '/pages/index',
+            "/rest/envoiemail",
+            "/rest/salon"
         ];
 
         const included = [

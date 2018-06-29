@@ -100,7 +100,7 @@
     </div>
     </div>
     <script>
-   function ajout(element){
+   function ajout(element, val){
     //   document.getElementById("buttonajout").style.visibility = "hidden";
 
       var formulaire = window.document.formulaireDynamique;
@@ -112,6 +112,9 @@
       // Les valeurs encodée dans le formulaire seront stockées dans un tableau
       champ.name = "QRCode";
       champ.type = "text";
+      if (val) {
+        champ.value = val;
+      }
       var sup = document.createElement("input");
       sup.value = "Supprimer";
       sup.type = "button";
@@ -157,6 +160,29 @@
                 document.getElementById("description").value = salon_courant.description;
                 document.getElementById("date_debut").value = salon_courant.date_debut;
                 document.getElementById("date_fin").value = salon_courant.date_fin;
+                
+                var listejs =  JSON.stringify(salon_courant);
+                listejs = listejs.split(",");
+                var nbrQRCode = 0;
+                var QRCoderegex = /QRCode-*/;
+                var liste2js;
+                for (let index = 0; index < listejs.length; index++) {
+                    if (listejs[index].match(QRCoderegex)) {
+                        nbrQRCode++;
+                        liste2js = listejs[index].split(":"); 
+                        liste2js = liste2js[1];
+                    }
+                }
+                for (let i = 0; i < listejs.length; i++) {
+                    if (listejs[i].match(QRCoderegex)) {
+                        nbrQRCode++;
+                        liste2js = listejs[i].split(":"); 
+                        liste2js = liste2js[1];                           
+                        liste2js = liste2js.replace('"', "");
+                        liste2js = liste2js.replace('"', "");
+                        ajout(document.getElementById("buttonajout"), liste2js);
+                    }
+                }                
             }
         })
     });

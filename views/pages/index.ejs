@@ -35,10 +35,8 @@
 
             <form class="form-signin">
                 <div class="form-group" id="form">
-                    <input id = "nom_salon" type="hidden" name="nom_salon" value="">
                     <% include ./infos_perso.ejs%>
                     <% include ./infos_competences.ejs%>
-
                     <div class="form-group">
                         <button class="btn btn-lg btn-primary btn-block" type="submit">Envoyer</button>
                     </div>
@@ -86,6 +84,7 @@
                     data[element.name] = element.value;
                 }
             }
+            data["id_salon"] = id_salon;
             return data;
         }, {});
         const handleFormSubmit = event => {
@@ -101,7 +100,6 @@
                 contentType: "application/json; charset=utf-8",
                 data : json_form,
                 success : function(result) {
-                    
 
                     document.getElementById('barre').innerHTML = "Contact ajouté !";
                         setTimeout(function() {

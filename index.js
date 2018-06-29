@@ -6,8 +6,9 @@ var morgan      = require('morgan');
 var mongoose    = require('mongoose');
 const path = require('path');
 var config = require('./app/config'); // get our config file
+const nodemailer = require('nodemailer');  
 
-app.use(function  (req, res, next) {
+app.use(function  (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -47,7 +48,7 @@ const usersPersistence = new UsersPersistence();
 // Chargement des controleurs
 const SalonService = require('./app/services/salonService');
 const salonService = new SalonService();
-salonService.setPersistence(salonPersistence);
+salonService.setPersistence(salonPersistence, contactPersistence);
 
 const ContactService = require('./app/services/contactService');
 const contactService = new ContactService();
@@ -59,6 +60,7 @@ usersService.setPersistence(usersPersistence);
 
 const __ = {
   express,
+  nodemailer,
   router,
   app,
   bodyParser,

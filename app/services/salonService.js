@@ -1,13 +1,38 @@
 module.exports = class SalonController {
-
     //Init couche persistence
     setPersistence(salonPersistence) {
         this.salonPersistence = salonPersistence;
     }
 
+    
     //****************************/
     //****** CRUD SALONS *********/
     //****************************/
+
+    envoiemail(req, callback) {  
+        var id_salon = ""; 
+        var sortie = true;    
+        this.salonPersistence.getAllSalons((err, listesalons) => {
+            listesalons.forEach(element => {                
+                if ((Date.parse(element.date_envoie) < Date.now())&& sortie == true){ // + boolean pour éviter d'envoyer plusieurs fois   //salon.date_send < new Date()
+                    // callback(element._id);
+                    sortie = false;
+                    id_salon = element._id;
+                }
+            }); 
+            if (sortie == true) {
+                callback("Aucun mail à envoyer");
+            } else {
+                console.log(id_salon);
+                
+                this.salonPersistence.getContactsParSalon("5b35e5bce34d9b11185b518e",(err, listeContacts) => {
+                    
+                    callback(listeContacts);
+                });
+            }
+        });
+    }
+
 
     //Ajout d'un salon
     addSalon(req, callback) {

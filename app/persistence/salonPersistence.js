@@ -2,8 +2,23 @@ const DB = require('../../db')
 const COLLECTION = 'salon'
 var sanitize = require('mongo-sanitize');
 var ObjectID = require('mongodb').ObjectID;
+const COLLECTIONcontact = 'contact'
+
 
 module.exports = class SalonPersistence {
+
+    getContactsParSalon(id,callback){
+        console.log(id);
+                
+        var db = DB.getDB()
+        db.collection(COLLECTIONcontact).find({ id_salon: id }).toArray(function (err, results) {
+            if (err) {
+                callback(err,null);
+            } else {                               
+                callback(null, results);
+            }
+        });
+    }
 
     //Find le salon correspondant à idSalon
     getSalon(idSalon, callback) {
@@ -23,13 +38,15 @@ module.exports = class SalonPersistence {
         _id: new ObjectID(sanitize(id_salon))
       }
       db.collection(COLLECTION).update(query, req,function(err,doc){
-          callback(err,doc)})
+          callback(err,doc)
+        })
     }
 
     // Renvoie la liste des salons
     getAllSalons(callback) {
         var db = DB.getDB()
-        db.collection(COLLECTION).find().toArray(function(err,doc){
+        
+        db.collection(COLLECTION).find().toArray(function(err,doc){           
             callback(err,doc)
         })
     }
@@ -119,9 +136,7 @@ module.exports = class SalonPersistence {
                         salon_suivant = results[i];
                     }
                     if ((Date.parse(results[i].date_debut)<= date_now) && date_now <= (Date.parse(results[i].date_fin)+86400000)) {
-                        // salon_suivant = results[i];
                         listesalonactuel.push(results[i]);
-                        // ret = false;
                     }
                     i++;
                 }

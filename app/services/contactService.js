@@ -16,10 +16,34 @@ module.exports = class ContactController {
      * si le contact ne veut pas etre recontacté redirection vers get puis vers la page index
      */
     addContact(req, callback) {
-        console.log(req.body);        
+        console.log("id_salon "+  req.body.id_salon);        
         this.contactPersistence.save(req.body, callback);
     };
 
+    // addContact(req, callback) {
+    //     -        console.log("Enregistrement Contact :"+req);
+    //     -        var contact = {
+    //     -            prenom: req.body.prenom,
+    //     -            email: req.body.email,
+    //     -            nom: req.body.nom,
+    //     -            telephone: req.body.telephone,
+    //     -            linkedin: req.body.linkedin,
+    //     -            viadeo: req.body.viadeo,
+    //     -            // jeuMario: req.body.jeuMario,
+    //     -            // jeuPepper: req.body.jeuPepper,
+    //     -            profil: req.body.button,
+    //     -            metier: req.body.metier,
+    //     -            accepteReContacte: req.body.ok,
+    //     -            id_salon: req.body.id_salon,
+    //     -            autre: req.body.autre,
+    //     -            datePriseContact: new Date()
+    //     -        };
+    //     -        console.log("Le contact :"+contact);
+    //     -        this.contactPersistence.save(contact, callback);
+    //     +        console.log(req.body);        
+    //     +        this.contactPersistence.save(req.body, callback);
+    //          };
+         
     /**
      *Permet de lister tous les visiteurs pris lors d'un salon en particulier
      */

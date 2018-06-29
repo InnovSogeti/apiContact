@@ -272,9 +272,25 @@ $(document).ready(function () {
                 },
                 dataType : "json",                                
                 success : function(items) {
-                var fileTitle = 'ListeContactjs';
-                
-                var csv = exportCSVFile(req.body, items, fileTitle);             
+
+                    var fileTitle = 'ListeContactjs';
+                    var headers = {
+                        _id :"_id",
+                        prenom : "prenom",
+                        id_salon : "idsalon",
+                        nom : "nom",
+                        email : "Email",
+                        telephone	: "tel",
+                        linkedin : "linkedin",
+                        viadeo : "viadeo",
+                        profil : "profil",
+                        metier : "metier",
+                        accepteReContacte	: "accepterecontact",
+                        id_salon : "idsalon",
+                        autre	: "autre",
+                        datePriseContact : "date"
+                    };
+                    var csv = exportCSVFile(headers, items, fileTitle);             
                 
                 }
             })

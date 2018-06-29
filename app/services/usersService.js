@@ -18,7 +18,6 @@ module.exports = class UsersController {
     addUsers(req, callback) {
         this.usersPersistence.checkLogin(req.body,(loginDispo, err) => {
             if(loginDispo){
-                console.log("000000000000000");
                 this.usersPersistence.save(req.body, callback);
             }
             else{

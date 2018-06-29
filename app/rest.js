@@ -87,6 +87,16 @@ module.exports = (__) => {
         });
     });
 
+        //permet l'envoi d'un mail
+    router.post('/rest/salon/envoiemail', function (req, res) { 
+        salonService.envoiemail(req, function (err, id_salon) {
+            if(err) {
+                res.send(err);
+            }else{
+                res.send(id_salon);
+            }
+        });
+    });
     //****************************/
     //******** CONTACTS **********/
     //****************************/
@@ -194,13 +204,9 @@ module.exports = (__) => {
 
     router.post('/rest/salon/update/:id_salon', function (req, res) {
         salonService.updateSalon(req.params.id_salon, req, function(err, retour){
-        if (res) {
-            console.log("cccccccc");
-            
+        if (res) {            
             res.send(err)
-        } else {
-            console.log("aaaaaaaaaaaaaaaaaaa");
-            
+        } else {           
             res.send(retour);
         }
         });
