@@ -1,5 +1,8 @@
 <% include header/headerSalon.ejs %>
-    <link href="/css/css/switchButton.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="/css/css/switchButton.css">
+    <link rel="stylesheet" href="/css/css/jquery.highlighttextarea.min.css">
+    <script src="/css/js/jquery.highlighttextarea.min.js"></script>
+
 
     <script>
         function extractUrlParams() {
@@ -105,9 +108,14 @@
                                 <label for="date_mail">Date d'envoi du mail : *</label>
                                 <input id="date_mail" type="date" class="form-control" name="date_mail">
                             </div>
-                            <div class="form-group">
-                                <label for="template_mail">Template mail : </label>
-                                <textarea id="template_mail" class="form-control" rows="5" name="template_mail"></textarea>
+                            <div id="container" class="form-group">
+                                <label for="template_mail">Template mail : </label><br>
+                                Utiliser les variables suivante dans le template : 
+                                <mark style="background-color:#ADF0FF;">@nom</mark>
+                                <mark style="background-color:#ADF0FF;">@prenom</mark>
+                                <mark style="background-color:#FFFF00;">@mail</mark><br>
+                                (elle seront remplacer par les données de chaque visiteurs)<br><br>
+                                <textarea id="template_mail" class="form-control" rows="7" name="template_mail"></textarea>
                             </div>
                         </div>
                     </div>
@@ -119,6 +127,19 @@
         </div>
     </div>
     <script>
+        function highlightTextarea() {
+            $('#template_mail').highlightTextarea({
+                words: [{
+                    color: '#ADF0FF',
+                    words: ['@prenom', '@nom']
+                }, {
+                    color: '#FFFF00',
+                    words: ['@mail']
+                }],
+                resizable: true
+            });
+        }
+
         function retourlistesalons() {
             window.location.href = "/pages/gestionsalon";
         }
@@ -150,6 +171,8 @@
                         document.getElementById("mail").style.display = "block"
                         document.getElementById("date_mail").value = salon_courant.date_mail;
                         document.getElementById("template_mail").value = salon_courant.template_mail;
+                        
+                        highlightTextarea(); // Lance la coloration de variable dans le template de mail
                     }
                 }
             })
@@ -174,11 +197,11 @@
             }
             return data;
         }, {});
-        
+
         /**
         * efface les valeurs pour le mail auto si la checkBox est décocher
         **/
-        const ifMailCheck = (data) => {
+        const ifMailNotCheck = (data) => {
             if (!document.getElementById('ifMail').checked) {
                 data.date_mail = "";
                 data.template_mail = "";
@@ -188,7 +211,7 @@
         const handleFormSubmit = event => {
             event.preventDefault();
             const data = formToJSON(form.elements);
-            const json_form = JSON.stringify(ifMailCheck(data), null, " ");
+            const json_form = JSON.stringify(ifMailNotCheck(data), null, " ");
             const url2 = "/rest/salon/update/";
 
             $.ajax({
