@@ -81,6 +81,7 @@ const __ = {
 require('./app/middleware')(__);
 require('./app/rest')(__);
 require('./app/controllers')(__);
+require('./views/pages/service_mail.js');
 
 
 app.use(router);
