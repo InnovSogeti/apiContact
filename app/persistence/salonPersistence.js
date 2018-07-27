@@ -130,4 +130,54 @@ module.exports = class SalonPersistence {
             }
         });        
     }
+    // get_salon_courant(callback) {
+    //     var db = DB.getDB()
+    //     db.collection(COLLECTION).find().toArray(function (err, results) {
+       
+    //         if (err) {
+    //             return null;
+    //         } else {
+    //             var i = 0;
+    //             var date_now = Date.now();
+    //             var salon_courant_tmp = results[0];
+    //             // var listesalonactuel;
+    //             var ret = true;
+    //             while ((results[i]) && ret) {
+    //                 if ((date_now <= Date.parse(results[i].date_debut)) && (Date.parse(results[i].date_debut) <= Date.parse(salon_courant_tmp.date_debut))) {
+    //                     salon_courant_tmp = results[i];
+    //                 }
+    //                 if ((Date.parse(results[i].date_debut)<= date_now) && date_now <= (Date.parse(results[i].date_fin)+86400000)) {
+    //                     salon_courant_tmp = results[i];
+    //                     ret = false;
+    //                 }
+    //                 i++;
+    //             }
+    //             callback(null, salon_courant_tmp);
+    //         }
+    //     });        
+    // }
+
+    /**
+     * Retourne les salons ou un mail doit étre envoyé  
+     */
+    getSalonsSendMail(callback) {
+        var db = DB.getDB()
+        db.collection(COLLECTION).find().toArray(function (err, results) {
+            if (err) {
+                return null;
+            } else {
+                var i = 0;
+                var cpt;
+                const CurrentDate = new Date().toISOString().slice(0,10); // Get current Date in YYYY-MM-DD
+                while (results[i]) {
+                    if (CurrentDate === results[i].date_mail) {
+                        cpt = results[i];
+                    }
+                    i++;
+                }
+                callback(null, cpt);
+            }
+        });
+
+    }
 }

@@ -80,5 +80,13 @@ module.exports = class SalonController {
     get_salon_courant(callback) {
         this.salonPersistence.get_salon_courant(callback);
     }
+
+
+    /**
+     * Retourne les salons ou un mail doit étre envoyé  
+     */
+    getSalonsSendMail(callback) {
+        this.salonPersistence.getSalonsSendMail(callback);
+    }
     
 }

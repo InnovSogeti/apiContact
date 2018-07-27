@@ -200,6 +200,25 @@ module.exports = (__) => {
         }
         });
     });
+    
+    //Retourne les salons ou un mail doit étre envoyé aujourd'hui
+    router.get('/rest/mailCheck', function (req, res) {
+        salonService.getSalonsSendMail(function (err, salonToDay) {
+            if(salonToDay) {
+                
+                contactService.getContactsParSalon(salonToDay._id, function(err,listeContacts){
+                    if(listeContacts) {
+                        res.send(listeContacts);  
+                    }else{
+                        res.status(404).send();
+                    }
+                });
+            }else{
+                res.status(404).send();
+            }
+        });
+    });
+
     //****************************/
     //******** Users **********/
     //****************************/
