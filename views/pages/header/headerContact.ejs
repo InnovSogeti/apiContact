@@ -67,6 +67,12 @@
                     dataType : "json",                                
                     success : function(salon_choisi) {
                         document.getElementById("nom_salon").innerHTML += salon_choisi.nom;
+                        if (salon_choisi.logo) {
+                            var path = salon_choisi.logo.replace("public", "");
+                            path = path.replace(/\/\//g, '/');
+                            document.getElementById("logo_salon").src= path;
+
+                        }
                     }
                 })
             }    
@@ -83,8 +89,9 @@
                             var listeSalon = "<h1>";
                             var selected= '';
                             var i = 0;
+                            listeSalon += "<p class=\"text-center\">Plusieurs salons ont lieu en ce moment : pouvez vous en choisir un :</p>";
                             listeSalon += "<select id = 'salon' class='btn btn-lg btn-primary btn-block' name='salon_courant'  size='1' onchange='changeSalonCourant(this.value)'>";
-                            listeSalon += "<option> Veuilez choisir un salon ! </option>"
+                            listeSalon += "<option> --- </option>"
                             while (salon_courant[i]) {
                                 if (salon_courant[i]) {
                                     selected= '';
@@ -95,7 +102,8 @@
                                 }
                                 i++;
                             }
-                            document.getElementById("listesaloncourant").innerHTML += listeSalon;      
+                            document.getElementById("listesaloncourant").innerHTML += listeSalon; 
+                            document.getElementById("formulaire_contact").style.display='none'
                         }
                         else {                            
                             document.getElementById("nom_salon").innerHTML = salon_courant[0].nom;
