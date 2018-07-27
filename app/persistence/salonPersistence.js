@@ -119,17 +119,14 @@ module.exports = class SalonPersistence {
                         salon_suivant = results[i];
                     }
                     if ((Date.parse(results[i].date_debut)<= date_now) && date_now <= (Date.parse(results[i].date_fin)+86400000)) {
-                        // salon_suivant = results[i];
                         listesalonactuel.push(results[i]);
-                        // ret = false;
                     }
                     i++;
                 }
                 if (listesalonactuel.length == 0) {
-                    callback(null, salon_suivant);
-                } else {
-                    callback(null, listesalonactuel);
+                    listesalonactuel.push(salon_suivant);
                 }
+                callback(null, listesalonactuel);
             }
         });        
     }
