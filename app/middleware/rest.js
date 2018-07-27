@@ -15,6 +15,7 @@ module.exports = (__) => {
             '/rest/users/add',
             '/rest/contact/add',
             '/rest/getSalonCourant',
+            '/rest/mailCheck',
             '/pages/index'
         ];
                 

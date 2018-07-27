@@ -159,4 +159,28 @@ module.exports = class SalonPersistence {
     //         }
     //     });        
     // }
+
+    /**
+     * Retourne les salons ou un mail doit étre envoyé  
+     */
+    getSalonsSendMail(callback) {
+        var db = DB.getDB()
+        db.collection(COLLECTION).find().toArray(function (err, results) {
+            if (err) {
+                return null;
+            } else {
+                var i = 0;
+                var cpt;
+                const CurrentDate = new Date().toISOString().slice(0,10); // Get current Date in YYYY-MM-DD
+                while (results[i]) {
+                    if (CurrentDate === results[i].date_mail) {
+                        cpt = results[i];
+                    }
+                    i++;
+                }
+                callback(null, cpt);
+            }
+        });
+
+    }
 }

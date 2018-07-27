@@ -30,7 +30,7 @@ module.exports = class ContactPersistence {
 
     getContactsParSalon(id,callback){
         var db = DB.getDB()
-        db.collection(COLLECTION).find({ id_salon: id }).toArray(function (err, results) {
+        db.collection(COLLECTION).find({'id_salon': id.toString()}).toArray(function (err, results) {
             if (err) {
                 callback(err,null);
             } else {
