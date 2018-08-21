@@ -11,19 +11,13 @@ module.exports = class UsersController {
 
     //Ajout d'un user
     addUsers(req, callback) {
-        this.usersPersistence.save(req.body, callback);   
-    }
-
-
-    addUsers(req, callback) {
-        this.usersPersistence.checkLogin(req.body,(loginDispo, err) => {
-        if(loginDispo){
-            console.log("000000000000000");
-            this.usersPersistence.save(req.body, callback);
-        }
-        else{
-            callback("login deja existant",null);
-        }
+        this.usersPersistence.checkLogin(req.body, (loginDispo, err) => {
+            if (loginDispo) {
+                this.usersPersistence.save(req.body, callback);
+            }
+            else {
+                callback("login deja existant", null);
+            }
         })
     }
 
@@ -35,7 +29,7 @@ module.exports = class UsersController {
     }
 
     //Retourne le user correspondant à iduser
-    getUser(id_user,callback){
+    getUser(id_user, callback) {
         this.usersPersistence.getUser(id_user, callback)
     }
 
@@ -46,8 +40,8 @@ module.exports = class UsersController {
 
     // Suppression d'un user
     deleteusers(idUsers, callback) {
-        console.log("Ctrl : Suppression de l'utilisateur : "+idUsers);
-        this.usersPersistence.delete(idUsers,function(err){
+        console.log("Ctrl : Suppression de l'utilisateur : " + idUsers);
+        this.usersPersistence.delete(idUsers, function (err) {
             //Gestion des KO
             if (err) return callback(err);
             //Retour OK
@@ -55,15 +49,15 @@ module.exports = class UsersController {
         });
     }
 
-    checkPassword(req, callback){
-        console.log("Ctrl : vérification du mdp de l'utilisateur : "+ req.body.login);
-        this.usersPersistence.checkPassword(req.body, function(err,infoUser){
+    checkPassword(req, callback) {
+        console.log("Ctrl : vérification du mdp de l'utilisateur : " + req.body.login);
+        this.usersPersistence.checkPassword(req.body, function (err, infoUser) {
             if (err) {
-                callback(err);        
+                callback(err);
             } else {
                 callback(infoUser);
             }
-      });
+        });
     }
 
 }
