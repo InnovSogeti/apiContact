@@ -8,8 +8,12 @@ var state = {
 
 // In the real world it will be better if the production uri comes
 // from an environment variable, instead of being hard coded.
-var PRODUCTION_URI = 'mongodb://127.0.0.1:27017/production'
-  , TEST_URI = 'mongodb://127.0.0.1:27017/test'
+const PRODUCTION_URI = 'mongodb://' + process.env.MONGO_URL + '/contactrh'
+    , TEST_URI = 'mongodb://127.0.0.1:27017/test'
+
+const DEFAULT_USER = process.env.defaultUser ? process.env.defaultUser : "admin"
+    , DEFAULT_PWD = process.env.defaultPwd ? process.env.defaultPwd : "admin"
+
 
 exports.MODE_TEST = 'mode_test'
 exports.MODE_PRODUCTION = 'mode_production'
@@ -19,10 +23,19 @@ exports.MODE_PRODUCTION = 'mode_production'
  * @param {*} mode 
  * @param {*} done 
  */
-exports.connect = function(mode, done) {
+exports.connect = function(done) {
   if (state.db) return done()
 
-  var uri = mode === exports.MODE_TEST ? TEST_URI : PRODUCTION_URI
+  // par defaut ce met en mod test
+  var uri = TEST_URI;
+  var mode = exports.MODE_TEST;
+
+  // passe en mode PRODUCTION si la variable d'environnement "MONGO_URL" est définie
+  if (process.env.MONGO_URL) {
+    uri = PRODUCTION_URI;
+    mode = exports.MODE_PRODUCTION;
+  }
+  console.log(mode);
 
   MongoClient.connect(uri, function(err, db) {
     if (err) return done(err)

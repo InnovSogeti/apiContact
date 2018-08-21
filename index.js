@@ -29,7 +29,7 @@ const DB = require('./db');
 const COLLECTION = 'users'
 var sanitize = require('mongo-sanitize');
 
-DB.connect(DB.MODE_PRODUCTION, function(err, db) {
+DB.connect(function(err, db) {
   if (err) {
     console.log('Unable to connect to Mongo.')
     process.exit(1)
@@ -81,7 +81,6 @@ const __ = {
 require('./app/middleware')(__);
 require('./app/rest')(__);
 require('./app/controllers')(__);
-require('./views/pages/service_mail.js');
 
 
 app.use(router);
