@@ -3,28 +3,30 @@ version: '3.5'
 services:
   
   <env>-contactrh-mongo:
-    image: "149.202.64.71:5001/mongo:3.4.15"
+    image: "37.187.93.167:5001/mongo:3.4.15"
     deploy:
       replicas: 1
     ports:
-      - "27100:27017"
+      - "27017"
     volumes:
       - "<env>_contactrh_mongo_data:/data"
     networks:
       - <env>
 
   <env>-contacrh-api:
-    image: "149.202.64.71:5001/innovation/contactrh:<revision_git>"  
+    image: "37.187.93.167:5001/innovation/contactrh:<revision_git>"  
     deploy:
       replicas: 1
     links:
       - <env>-contactrh-mongo:mongo
     ports:
-      - "::8000"
+      - "8085:8000"
+    environment:
+      - MONGO_URL=<env>-contactrh-mongo:27017
     labels:
       - "traefik.port=8000"
       - "traefik.backend=<env>-contacrh-api"
-      - "traefik.frontend.rule=PathPrefix: /<env>/contactrh-api"
+      - "traefik.frontend.rule=PathPrefix: /<env>/contactrh"
       - "traefik.docker.network=<env>"
       - "application.name=contactrh"
       - "application.version=1.0"
