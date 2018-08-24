@@ -4,7 +4,7 @@ module.exports = (__) => {
         res.render('pages/login', {});
     });
     router.get('/pages/add_salon', function(req, res) {
-        res.render('pages/addSalon', {});
+        res.render('pages/addsalon', {});
     });
     router.get('/pages/gestionsalon', function(req, res) {
         res.render('pages/gestionsalon', {});
